@@ -6,18 +6,18 @@ import { elements, Element } from '@/data/elements';
 // Função para obter a cor baseada na categoria do elemento
 const getCategoryColor = (category: string) => {
   const colors: { [key: string]: string } = {
-    'metal alcalino': 'bg-red-200 hover:bg-red-300 border-red-400',
-    'metal alcalino-terroso': 'bg-orange-200 hover:bg-orange-300 border-orange-400',
-    'metal de transição': 'bg-blue-200 hover:bg-blue-300 border-blue-400',
-    'metal pós-transição': 'bg-green-200 hover:bg-green-300 border-green-400',
-    'semimetal': 'bg-yellow-200 hover:bg-yellow-300 border-yellow-400',
-    'não-metal': 'bg-purple-200 hover:bg-purple-300 border-purple-400',
-    'halogênio': 'bg-pink-200 hover:bg-pink-300 border-pink-400',
-    'gás nobre': 'bg-cyan-200 hover:bg-cyan-300 border-cyan-400',
-    'lantanídeo': 'bg-indigo-200 hover:bg-indigo-300 border-indigo-400',
-    'actinídeo': 'bg-gray-200 hover:bg-gray-300 border-gray-400'
+    'metal alcalino': 'bg-red-200 dark:bg-red-800 hover:bg-red-300 dark:hover:bg-red-700 border-red-400 dark:border-red-600',
+    'metal alcalino-terroso': 'bg-orange-200 dark:bg-orange-800 hover:bg-orange-300 dark:hover:bg-orange-700 border-orange-400 dark:border-orange-600',
+    'metal de transição': 'bg-blue-200 dark:bg-blue-800 hover:bg-blue-300 dark:hover:bg-blue-700 border-blue-400 dark:border-blue-600',
+    'metal pós-transição': 'bg-green-200 dark:bg-green-800 hover:bg-green-300 dark:hover:bg-green-700 border-green-400 dark:border-green-600',
+    'semimetal': 'bg-yellow-200 dark:bg-yellow-800 hover:bg-yellow-300 dark:hover:bg-yellow-700 border-yellow-400 dark:border-yellow-600',
+    'não-metal': 'bg-purple-200 dark:bg-purple-800 hover:bg-purple-300 dark:hover:bg-purple-700 border-purple-400 dark:border-purple-600',
+    'halogênio': 'bg-pink-200 dark:bg-pink-800 hover:bg-pink-300 dark:hover:bg-pink-700 border-pink-400 dark:border-pink-600',
+    'gás nobre': 'bg-cyan-200 dark:bg-cyan-800 hover:bg-cyan-300 dark:hover:bg-cyan-700 border-cyan-400 dark:border-cyan-600',
+    'lantanídeo': 'bg-indigo-200 dark:bg-indigo-800 hover:bg-indigo-300 dark:hover:bg-indigo-700 border-indigo-400 dark:border-indigo-600',
+    'actinídeo': 'bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 border-gray-400 dark:border-gray-500'
   };
-  return colors[category] || 'bg-gray-100 hover:bg-gray-200 border-gray-300';
+  return colors[category] || 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 border-gray-300 dark:border-gray-500';
 };
 
 // Função para obter o nome da categoria em português
@@ -84,56 +84,56 @@ export default function TabelaPage() {
       title={`${element.number}. ${element.name} (${element.symbol}) - ${element.atomic_mass} u`}
       onClick={() => handleElementClick(element)}
     >
-      <div className="text-xs font-bold text-gray-600">{element.number}</div>
-      <div className="text-lg font-bold text-gray-800">{element.symbol}</div>
-      <div className="text-xs text-gray-700 truncate">{element.name}</div>
-      <div className="text-xs text-gray-500">{element.atomic_mass}</div>
+      <div className="text-xs font-bold text-gray-600 dark:text-gray-300">{element.number}</div>
+      <div className="text-lg font-bold text-gray-800 dark:text-gray-100">{element.symbol}</div>
+      <div className="text-xs text-gray-700 dark:text-gray-200 truncate">{element.name}</div>
+      <div className="text-xs text-gray-500 dark:text-gray-400">{element.atomic_mass}</div>
     </div>
   );
 
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold text-primary mb-4">
+        <h1 className="text-4xl font-bold text-primary dark:text-primary mb-4">
           Tabela Periódica Completa
         </h1>
-        <p className="text-lg text-muted">
+        <p className="text-lg text-muted dark:text-dark-text-secondary">
           Visualize todos os elementos químicos organizados por grupos e períodos
         </p>
       </div>
 
       {/* Filtros e Pesquisa */}
-      <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
-        <h2 className="text-2xl font-bold text-primary mb-4">Filtros e Pesquisa</h2>
+      <div className="bg-white dark:bg-dark-surface rounded-lg shadow-lg dark:shadow-xl dark:shadow-black/20 p-6 mb-8 border border-gray-200 dark:border-dark-border">
+        <h2 className="text-2xl font-bold text-primary dark:text-primary mb-4">Filtros e Pesquisa</h2>
 
         <div className="row g-3">
           {/* Barra de Pesquisa */}
           <div className="col-md-6">
-            <label htmlFor="searchInput" className="form-label">
+            <label htmlFor="searchInput" className="form-label dark:text-dark-text">
               <i className="fas fa-search me-2"></i>
               Pesquisar Elementos
             </label>
             <input
               type="text"
-              className="form-control"
+              className="form-control dark:bg-dark-bg dark:text-dark-text dark:border-dark-border"
               id="searchInput"
               placeholder="Digite nome, símbolo ou número..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <div className="form-text">
+            <div className="form-text dark:text-dark-text-secondary">
               Pesquise por nome, símbolo ou número atômico
             </div>
           </div>
 
           {/* Dropdown de Categorias */}
           <div className="col-md-4">
-            <label htmlFor="categorySelect" className="form-label">
+            <label htmlFor="categorySelect" className="form-label dark:text-dark-text">
               <i className="fas fa-filter me-2"></i>
               Filtrar por Categoria
             </label>
             <select
-              className="form-select"
+              className="form-select dark:bg-dark-bg dark:text-dark-text dark:border-dark-border"
               id="categorySelect"
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
@@ -151,7 +151,7 @@ export default function TabelaPage() {
           <div className="col-md-2 d-flex align-items-end">
             <button
               type="button"
-              className="btn btn-outline-secondary w-100"
+              className="btn btn-outline-secondary w-100 dark:border-dark-border dark:text-dark-text dark:hover:bg-dark-border"
               onClick={clearFilters}
               disabled={searchTerm === '' && selectedCategory === ''}
             >
@@ -163,7 +163,7 @@ export default function TabelaPage() {
 
         {/* Resultados da Pesquisa */}
         <div className="mt-3">
-          <div className="alert alert-info d-flex align-items-center" role="alert">
+          <div className="alert alert-info d-flex align-items-center dark:bg-blue-900 dark:text-blue-100 dark:border-blue-700" role="alert">
             <i className="fas fa-info-circle me-2"></i>
             <div>
               {filteredElements.length === elements.length ? (
@@ -177,16 +177,16 @@ export default function TabelaPage() {
       </div>
 
       {/* Lista de Elementos */}
-      <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
-        <h2 className="text-2xl font-bold text-primary mb-4">
+      <div className="bg-white dark:bg-dark-surface rounded-lg shadow-lg dark:shadow-xl dark:shadow-black/20 p-6 mb-8 border border-gray-200 dark:border-dark-border">
+        <h2 className="text-2xl font-bold text-primary dark:text-primary mb-4">
           {filteredElements.length === elements.length ? 'Todos os Elementos' : 'Elementos Filtrados'}
         </h2>
 
         {filteredElements.length === 0 ? (
           <div className="text-center py-8">
-            <i className="fas fa-search fa-3x text-muted mb-3"></i>
-            <h4 className="text-muted">Nenhum elemento encontrado</h4>
-            <p className="text-muted">Tente ajustar os filtros de pesquisa</p>
+            <i className="fas fa-search fa-3x text-muted dark:text-dark-text-secondary mb-3"></i>
+            <h4 className="text-muted dark:text-dark-text-secondary">Nenhum elemento encontrado</h4>
+            <p className="text-muted dark:text-dark-text-secondary">Tente ajustar os filtros de pesquisa</p>
             <button
               type="button"
               className="btn btn-primary"
@@ -220,8 +220,8 @@ export default function TabelaPage() {
           'actinídeo': 'Actinídeos'
         }).map(([category, name]) => (
           <div key={category} className={`p-4 rounded-lg ${getCategoryColor(category)}`}>
-            <h3 className="font-semibold mb-2">{name}</h3>
-            <p className="text-sm text-gray-700">
+            <h3 className="font-semibold mb-2 dark:text-gray-100">{name}</h3>
+            <p className="text-sm text-gray-700 dark:text-gray-300">
               {elements.filter(el => el.category === category).length} elementos
             </p>
           </div>
@@ -232,14 +232,14 @@ export default function TabelaPage() {
       {showModal && selectedElement && (
         <div className="modal fade show d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
           <div className="modal-dialog modal-lg">
-            <div className="modal-content">
-              <div className="modal-header">
+            <div className="modal-content dark:bg-dark-surface dark:text-dark-text dark:border-dark-border">
+              <div className="modal-header dark:border-dark-border">
                 <h5 className="modal-title">
                   {selectedElement.number}. {selectedElement.name} ({selectedElement.symbol})
                 </h5>
                 <button
                   type="button"
-                  className="btn-close"
+                  className="btn-close dark:filter-invert"
                   onClick={closeModal}
                   aria-label="Close"
                 ></button>
@@ -266,7 +266,7 @@ export default function TabelaPage() {
                   </div>
                 </div>
               </div>
-              <div className="modal-footer">
+              <div className="modal-footer dark:border-dark-border">
                 <a
                   href={selectedElement.source}
                   target="_blank"
@@ -277,7 +277,7 @@ export default function TabelaPage() {
                 </a>
                 <button
                   type="button"
-                  className="btn btn-secondary"
+                  className="btn btn-secondary dark:bg-dark-border dark:text-dark-text dark:hover:bg-gray-600"
                   onClick={closeModal}
                 >
                   Fechar

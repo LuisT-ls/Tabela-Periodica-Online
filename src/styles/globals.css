@@ -126,6 +126,10 @@ a {
   background: #f1f1f1;
 }
 
+.dark ::-webkit-scrollbar-track {
+  background: #2d2d2d;
+}
+
 ::-webkit-scrollbar-thumb {
   background: var(--primary);
   border-radius: 4px;
@@ -133,4 +137,56 @@ a {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--primary-dark);
+}
+
+/* Dark mode transitions */
+* {
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
+
+/* Dark mode overrides for Bootstrap components */
+.dark .form-control,
+.dark .form-select {
+  background-color: #1a1a1a !important;
+  border-color: #404040 !important;
+  color: #e5e5e5 !important;
+}
+
+.dark .form-control:focus,
+.dark .form-select:focus {
+  background-color: #1a1a1a !important;
+  border-color: #007bff !important;
+  color: #e5e5e5 !important;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important;
+}
+
+.dark .btn-outline-secondary {
+  border-color: #404040 !important;
+  color: #e5e5e5 !important;
+}
+
+.dark .btn-outline-secondary:hover {
+  background-color: #404040 !important;
+  border-color: #404040 !important;
+  color: #e5e5e5 !important;
+}
+
+.dark .alert-info {
+  background-color: #1e3a8a !important;
+  border-color: #1e40af !important;
+  color: #dbeafe !important;
+}
+
+.dark .modal-content {
+  background-color: #2d2d2d !important;
+  border-color: #404040 !important;
+}
+
+.dark .modal-header,
+.dark .modal-footer {
+  border-color: #404040 !important;
+}
+
+.dark .btn-close {
+  filter: invert(1);
 }

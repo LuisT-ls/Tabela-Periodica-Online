@@ -2,36 +2,36 @@ export default function SobrePage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold text-primary mb-4">
+        <h1 className="text-4xl font-bold text-primary dark:text-primary mb-4">
           Sobre o Projeto
         </h1>
-        <p className="text-lg text-muted">
+        <p className="text-lg text-muted dark:text-dark-text-secondary">
           Conheça mais sobre a Tabela Periódica Online e sua história
         </p>
       </div>
 
       {/* Propósito da Aplicação */}
-      <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
-        <h2 className="text-2xl font-bold text-primary mb-4">
+      <div className="bg-white dark:bg-dark-surface rounded-lg shadow-lg dark:shadow-xl dark:shadow-black/20 p-6 mb-8 border border-gray-200 dark:border-dark-border">
+        <h2 className="text-2xl font-bold text-primary dark:text-primary mb-4">
           <i className="fas fa-bullseye mr-2"></i>
           Propósito da Aplicação
         </h2>
-        <p className="text-muted mb-4">
+        <p className="text-muted dark:text-dark-text-secondary mb-4">
           A <strong>Tabela Periódica Online</strong> é uma ferramenta educativa e interativa desenvolvida
           para facilitar o aprendizado e a compreensão dos elementos químicos. Nosso objetivo é tornar
           o estudo da química mais acessível, visual e envolvente para estudantes, professores e
           entusiastas da ciência.
         </p>
-        <p className="text-muted mb-4">
+        <p className="text-muted dark:text-dark-text-secondary mb-4">
           Através de uma interface moderna e responsiva, oferecemos:
         </p>
-        <ul className="list-disc list-inside text-muted space-y-2 mb-4">
+        <ul className="list-disc list-inside text-muted dark:text-dark-text-secondary space-y-2 mb-4">
           <li><strong>Exploração Interativa:</strong> Navegue pela tabela periódica com informações detalhadas de cada elemento</li>
           <li><strong>Comparação de Elementos:</strong> Compare propriedades entre diferentes elementos químicos</li>
           <li><strong>Quiz Educativo:</strong> Teste seus conhecimentos sobre os elementos químicos</li>
           <li><strong>Informações Completas:</strong> Acesso a dados como massa atômica, configuração eletrônica, propriedades físicas e químicas</li>
         </ul>
-        <p className="text-muted">
+        <p className="text-muted dark:text-dark-text-secondary">
           Esta aplicação é ideal para uso em salas de aula, estudos independentes e como referência
           rápida para profissionais da área.
         </p>
@@ -39,7 +39,7 @@ export default function SobrePage() {
 
       <div className="grid md:grid-cols-2 gap-8 mb-12">
         {/* Sobre a Tabela Periódica */}
-        <div className="bg-white rounded-lg shadow-lg p-6">
+        <div className="bg-white dark:bg-dark-surface rounded-lg shadow-lg dark:shadow-xl dark:shadow-black/20 p-6 border border-gray-200 dark:border-dark-border">
           <h2 className="text-2xl font-bold text-primary mb-4">
             <i className="fas fa-info-circle mr-2"></i>
             Sobre a Tabela Periódica

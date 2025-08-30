@@ -8,10 +8,10 @@ export default function HomePage() {
     <div className="container mx-auto px-4 py-8">
       {/* Hero Section */}
       <section className="text-center mb-12">
-        <h1 className="text-5xl font-bold text-primary mb-4">
+        <h1 className="text-5xl font-bold text-primary dark:text-primary mb-4">
           Tabela Periódica Online
         </h1>
-        <p className="text-xl text-muted mb-8 max-w-3xl mx-auto">
+        <p className="text-xl text-muted dark:text-dark-text-secondary mb-8 max-w-3xl mx-auto">
           Explore os elementos químicos de forma interativa e educativa.
           Descubra propriedades, história e aplicações dos elementos que compõem nosso universo.
         </p>
@@ -35,45 +35,45 @@ export default function HomePage() {
 
       {/* Features Section */}
       <section className="grid md:grid-cols-3 gap-8 mb-12">
-        <div className="text-center p-6 bg-light rounded-lg">
+        <div className="text-center p-6 bg-light dark:bg-dark-surface rounded-lg border border-gray-200 dark:border-dark-border">
           <i className="fas fa-search text-4xl text-primary mb-4"></i>
-          <h3 className="text-xl font-semibold mb-2">Busca Inteligente</h3>
-          <p className="text-muted">
+          <h3 className="text-xl font-semibold mb-2 dark:text-dark-text">Busca Inteligente</h3>
+          <p className="text-muted dark:text-dark-text-secondary">
             Encontre elementos por nome, símbolo, número atômico ou propriedades específicas.
           </p>
         </div>
 
-        <div className="text-center p-6 bg-light rounded-lg">
+        <div className="text-center p-6 bg-light dark:bg-dark-surface rounded-lg border border-gray-200 dark:border-dark-border">
           <i className="fas fa-chart-line text-4xl text-primary mb-4"></i>
-          <h3 className="text-xl font-semibold mb-2">Dados Detalhados</h3>
-          <p className="text-muted">
+          <h3 className="text-xl font-semibold mb-2 dark:text-dark-text">Dados Detalhados</h3>
+          <p className="text-muted dark:text-dark-text-secondary">
             Acesse informações completas sobre massa atômica, configuração eletrônica e muito mais.
           </p>
         </div>
 
-        <div className="text-center p-6 bg-light rounded-lg">
+        <div className="text-center p-6 bg-light dark:bg-dark-surface rounded-lg border border-gray-200 dark:border-dark-border">
           <i className="fas fa-mobile-alt text-4xl text-primary mb-4"></i>
-          <h3 className="text-xl font-semibold mb-2">Responsivo</h3>
-          <p className="text-muted">
+          <h3 className="text-xl font-semibold mb-2 dark:text-dark-text">Responsivo</h3>
+          <p className="text-muted dark:text-dark-text-secondary">
             Interface otimizada para desktop, tablet e dispositivos móveis.
           </p>
         </div>
       </section>
 
       {/* Quick Navigation */}
-      <section className="bg-light p-8 rounded-lg">
-        <h2 className="text-3xl font-bold text-center mb-8">Navegação Rápida</h2>
+      <section className="bg-light dark:bg-dark-surface p-8 rounded-lg border border-gray-200 dark:border-dark-border">
+        <h2 className="text-3xl font-bold text-center mb-8 dark:text-dark-text">Navegação Rápida</h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
           {routes.map((route) => (
             <Link
               key={route.path}
               href={route.path}
-              className="flex items-center space-x-3 p-4 bg-white rounded-lg hover:shadow-md transition-shadow"
+              className="flex items-center space-x-3 p-4 bg-white dark:bg-dark-bg rounded-lg hover:shadow-md dark:hover:shadow-lg dark:hover:shadow-black/20 transition-shadow border border-gray-200 dark:border-dark-border"
             >
               <i className={`${route.icon} text-2xl text-primary`}></i>
               <div>
-                <h3 className="font-semibold">{route.name}</h3>
-                <p className="text-sm text-muted">Acessar {route.name.toLowerCase()}</p>
+                <h3 className="font-semibold dark:text-dark-text">{route.name}</h3>
+                <p className="text-sm text-muted dark:text-dark-text-secondary">Acessar {route.name.toLowerCase()}</p>
               </div>
             </Link>
           ))}
@@ -82,8 +82,8 @@ export default function HomePage() {
 
       {/* About Section */}
       <section className="mt-12 text-center">
-        <h2 className="text-3xl font-bold mb-4">Sobre a Tabela Periódica</h2>
-        <p className="text-lg text-muted max-w-4xl mx-auto">
+        <h2 className="text-3xl font-bold mb-4 dark:text-dark-text">Sobre a Tabela Periódica</h2>
+        <p className="text-lg text-muted dark:text-dark-text-secondary max-w-4xl mx-auto">
           A tabela periódica é uma ferramenta fundamental na química que organiza os elementos
           químicos de acordo com suas propriedades e estrutura atômica. Desenvolvida por Dmitri
           Mendeleev em 1869, ela continua sendo essencial para o estudo e compreensão da química moderna.
