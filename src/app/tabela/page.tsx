@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { elements } from '@/data/elements';
+import { elements, Element } from '@/data/elements';
 
 // Função para obter a cor baseada na categoria do elemento
 const getCategoryColor = (category: string) => {
@@ -37,41 +37,11 @@ const getCategoryName = (category: string) => {
   return names[category] || category;
 };
 
-// Função para criar a grade da tabela periódica
-const createPeriodicTableGrid = () => {
-  const grid: (typeof elements[0] | null)[][] = Array(7).fill(null).map(() => Array(18).fill(null));
-
-  elements.forEach(element => {
-    const row = element.period - 1;
-    const col = element.group - 1;
-
-    // Apenas elementos que não são lantanídeos ou actinídeos
-    if (element.number < 57 || (element.number > 71 && element.number < 89) || element.number > 103) {
-      grid[row][col] = element;
-    }
-  });
-
-  return grid;
-};
-
-// Função para obter lantanídeos
-const getLanthanides = () => {
-  return elements.filter(element => element.number >= 57 && element.number <= 71);
-};
-
-// Função para obter actinídeos
-const getActinides = () => {
-  return elements.filter(element => element.number >= 89 && element.number <= 103);
-};
-
 export default function TabelaPage() {
-  const [selectedElement, setSelectedElement] = useState<typeof elements[0] | null>(null);
+  const [selectedElement, setSelectedElement] = useState<Element | null>(null);
   const [showModal, setShowModal] = useState(false);
-  const grid = createPeriodicTableGrid();
-  const lanthanides = getLanthanides();
-  const actinides = getActinides();
 
-  const handleElementClick = (element: typeof elements[0]) => {
+  const handleElementClick = (element: Element) => {
     setSelectedElement(element);
     setShowModal(true);
   };
@@ -81,7 +51,7 @@ export default function TabelaPage() {
     setSelectedElement(null);
   };
 
-  const ElementCard = ({ element }: { element: typeof elements[0] }) => (
+  const ElementCard = ({ element }: { element: Element }) => (
     <div
       className={`border-2 p-2 text-center cursor-pointer transition-all duration-200 transform hover:scale-105 ${getCategoryColor(element.category)}`}
       title={`${element.number}. ${element.name} (${element.symbol}) - ${element.atomic_mass} u`}
@@ -105,55 +75,11 @@ export default function TabelaPage() {
         </p>
       </div>
 
-      {/* Tabela Periódica Principal */}
-      <div className="bg-white rounded-lg shadow-lg p-6 overflow-x-auto mb-8">
-        <div className="inline-block min-w-full">
-          {/* Cabeçalho dos grupos */}
-          <div className="grid grid-cols-18 gap-1 mb-4">
-            <div className="text-center text-sm font-semibold text-muted p-2"></div>
-            {Array.from({ length: 18 }, (_, i) => (
-              <div key={i} className="text-center text-sm font-semibold text-muted p-2">
-                {i + 1}
-              </div>
-            ))}
-          </div>
-
-          {/* Linhas dos períodos */}
-          {grid.map((row, rowIndex) => (
-            <div key={rowIndex} className="grid grid-cols-18 gap-1 mb-1">
-              {/* Número do período */}
-              <div className="text-center text-sm font-semibold text-muted p-2 flex items-center justify-center">
-                {rowIndex + 1}
-              </div>
-
-              {/* Células dos elementos */}
-              {row.map((element, colIndex) => {
-                if (!element) {
-                  return <div key={colIndex} className="p-2"></div>;
-                }
-
-                return <ElementCard key={colIndex} element={element} />;
-              })}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Seção dos Lantanídeos */}
+      {/* Lista de Elementos */}
       <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
-        <h2 className="text-2xl font-bold text-primary mb-4">Lantanídeos</h2>
-        <div className="grid grid-cols-15 gap-1">
-          {lanthanides.map((element, index) => (
-            <ElementCard key={index} element={element} />
-          ))}
-        </div>
-      </div>
-
-      {/* Seção dos Actinídeos */}
-      <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
-        <h2 className="text-2xl font-bold text-primary mb-4">Actinídeos</h2>
-        <div className="grid grid-cols-15 gap-1">
-          {actinides.map((element, index) => (
+        <h2 className="text-2xl font-bold text-primary mb-4">Todos os Elementos</h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-2">
+          {elements.map((element, index) => (
             <ElementCard key={index} element={element} />
           ))}
         </div>
