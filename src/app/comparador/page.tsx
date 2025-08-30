@@ -75,6 +75,31 @@ export default function ComparadorPage() {
     return 'different';
   };
 
+  const getComparisonClass = (element: Element, otherElement: Element | null, property: keyof Element | 'state' | 'electronegativity') => {
+    if (!otherElement) return '';
+    
+    let value1: any;
+    let value2: any;
+    
+    if (property === 'state') {
+      value1 = getStateOfMatter(element);
+      value2 = getStateOfMatter(otherElement);
+    } else if (property === 'electronegativity') {
+      value1 = getElectronegativity(element);
+      value2 = getElectronegativity(otherElement);
+    } else {
+      value1 = element[property as keyof Element];
+      value2 = otherElement[property as keyof Element];
+    }
+    
+    const comparison = compareValues(value1, value2, property);
+    
+    if (comparison === 'higher') return 'text-success fw-bold';
+    if (comparison === 'lower') return 'text-danger fw-bold';
+    if (comparison === 'different') return 'text-warning fw-bold';
+    return '';
+  };
+
   const ElementCard = ({ element, position }: { element: Element; position: 'left' | 'right' }) => {
     const stateOfMatter = getStateOfMatter(element);
     const electronegativity = getElectronegativity(element);
@@ -91,13 +116,13 @@ export default function ComparadorPage() {
           <div className="row">
             <div className="col-6">
               <strong>Número Atômico:</strong>
-              <span className={`ms-2 ${otherElement && compareValues(element.number, otherElement.number, 'number') === 'higher' ? 'text-success fw-bold' : compareValues(element.number, otherElement.number, 'number') === 'lower' ? 'text-danger fw-bold' : ''}`}>
+              <span className={`ms-2 ${getComparisonClass(element, otherElement, 'number')}`}>
                 {element.number}
               </span>
             </div>
             <div className="col-6">
               <strong>Massa Atômica:</strong>
-              <span className={`ms-2 ${otherElement && compareValues(element.atomic_mass, otherElement.atomic_mass, 'mass') === 'higher' ? 'text-success fw-bold' : compareValues(element.atomic_mass, otherElement.atomic_mass, 'mass') === 'lower' ? 'text-danger fw-bold' : ''}`}>
+              <span className={`ms-2 ${getComparisonClass(element, otherElement, 'atomic_mass')}`}>
                 {element.atomic_mass} u
               </span>
             </div>
@@ -106,13 +131,13 @@ export default function ComparadorPage() {
           <div className="row mt-2">
             <div className="col-6">
               <strong>Grupo:</strong>
-              <span className={`ms-2 ${otherElement && compareValues(element.group, otherElement.group, 'group') === 'higher' ? 'text-success fw-bold' : compareValues(element.group, otherElement.group, 'group') === 'lower' ? 'text-danger fw-bold' : ''}`}>
+              <span className={`ms-2 ${getComparisonClass(element, otherElement, 'group')}`}>
                 {element.group}
               </span>
             </div>
             <div className="col-6">
               <strong>Período:</strong>
-              <span className={`ms-2 ${otherElement && compareValues(element.period, otherElement.period, 'period') === 'higher' ? 'text-success fw-bold' : compareValues(element.period, otherElement.period, 'period') === 'lower' ? 'text-danger fw-bold' : ''}`}>
+              <span className={`ms-2 ${getComparisonClass(element, otherElement, 'period')}`}>
                 {element.period}
               </span>
             </div>
@@ -121,13 +146,13 @@ export default function ComparadorPage() {
           <div className="row mt-2">
             <div className="col-6">
               <strong>Estado Físico:</strong>
-              <span className={`ms-2 ${otherElement && compareValues(stateOfMatter, getStateOfMatter(otherElement), 'state') === 'different' ? 'text-warning fw-bold' : ''}`}>
+              <span className={`ms-2 ${getComparisonClass(element, otherElement, 'state')}`}>
                 {stateOfMatter}
               </span>
             </div>
             <div className="col-6">
               <strong>Eletronegatividade:</strong>
-              <span className={`ms-2 ${otherElement && compareValues(electronegativity, getElectronegativity(otherElement), 'electronegativity') === 'higher' ? 'text-success fw-bold' : compareValues(electronegativity, getElectronegativity(otherElement), 'electronegativity') === 'lower' ? 'text-danger fw-bold' : ''}`}>
+              <span className={`ms-2 ${getComparisonClass(element, otherElement, 'electronegativity')}`}>
                 {electronegativity}
               </span>
             </div>
@@ -135,7 +160,7 @@ export default function ComparadorPage() {
 
           <div className="mt-3">
             <strong>Categoria:</strong>
-            <span className={`ms-2 ${otherElement && compareValues(element.category, otherElement.category, 'category') === 'different' ? 'text-warning fw-bold' : ''}`}>
+            <span className={`ms-2 ${getComparisonClass(element, otherElement, 'category')}`}>
               {getCategoryName(element.category)}
             </span>
           </div>
