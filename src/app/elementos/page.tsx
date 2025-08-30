@@ -18,7 +18,7 @@ export default function ElementosPage() {
     return matchesSearch && matchesCategory;
   });
 
-  const categories = ['todos', ...new Set(elementosData.map(el => el.categoria))];
+  const categories = ['todos', ...Array.from(new Set(elementosData.map(el => el.categoria)))];
 
   return (
     <div className="container mx-auto px-4 py-8">
