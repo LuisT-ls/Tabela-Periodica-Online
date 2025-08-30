@@ -323,6 +323,127 @@ export const elements: Element[] = [
     summary: "Elemento radioativo usado em energia nuclear e armas nucleares.",
     discovered_by: "Martin Heinrich Klaproth",
     source: "https://pt.wikipedia.org/wiki/Ur%C3%A2nio"
+  },
+  // Elementos adicionais para uma tabela periódica mais completa
+  {
+    number: 9,
+    symbol: "F",
+    name: "Flúor",
+    atomic_mass: 18.998,
+    category: "halogênio",
+    group: 17,
+    period: 2,
+    summary: "Elemento mais eletronegativo, usado em pasta de dente e refrigeração.",
+    discovered_by: "Henri Moissan",
+    source: "https://pt.wikipedia.org/wiki/Fl%C3%BAor"
+  },
+  {
+    number: 10,
+    symbol: "Ne",
+    name: "Neônio",
+    atomic_mass: 20.180,
+    category: "gás nobre",
+    group: 18,
+    period: 2,
+    summary: "Gás nobre usado em placas de neon e refrigeração criogênica.",
+    discovered_by: "William Ramsay",
+    source: "https://pt.wikipedia.org/wiki/Ne%C3%B4nio"
+  },
+  {
+    number: 11,
+    symbol: "Na",
+    name: "Sódio",
+    atomic_mass: 22.990,
+    category: "metal alcalino",
+    group: 1,
+    period: 3,
+    summary: "Metal alcalino essencial para o organismo, presente no sal de cozinha.",
+    discovered_by: "Humphry Davy",
+    source: "https://pt.wikipedia.org/wiki/S%C3%B3dio"
+  },
+  {
+    number: 12,
+    symbol: "Mg",
+    name: "Magnésio",
+    atomic_mass: 24.305,
+    category: "metal alcalino-terroso",
+    group: 2,
+    period: 3,
+    summary: "Metal leve essencial para plantas e usado em ligas.",
+    discovered_by: "Joseph Black",
+    source: "https://pt.wikipedia.org/wiki/Magn%C3%A9sio"
+  },
+  {
+    number: 13,
+    symbol: "Al",
+    name: "Alumínio",
+    atomic_mass: 26.982,
+    category: "metal pós-transição",
+    group: 13,
+    period: 3,
+    summary: "Metal leve usado em construção, transporte e embalagens.",
+    discovered_by: "Hans Christian Ørsted",
+    source: "https://pt.wikipedia.org/wiki/Alum%C3%ADnio"
+  },
+  {
+    number: 14,
+    symbol: "Si",
+    name: "Silício",
+    atomic_mass: 28.085,
+    category: "semimetal",
+    group: 14,
+    period: 3,
+    summary: "Semimetal essencial para semicondutores e tecnologia.",
+    discovered_by: "Jöns Jacob Berzelius",
+    source: "https://pt.wikipedia.org/wiki/Sil%C3%ADcio"
+  },
+  {
+    number: 15,
+    symbol: "P",
+    name: "Fósforo",
+    atomic_mass: 30.974,
+    category: "não-metal",
+    group: 15,
+    period: 3,
+    summary: "Não-metal essencial para a vida, presente no DNA e ATP.",
+    discovered_by: "Hennig Brand",
+    source: "https://pt.wikipedia.org/wiki/F%C3%B3sforo"
+  },
+  {
+    number: 16,
+    symbol: "S",
+    name: "Enxofre",
+    atomic_mass: 32.06,
+    category: "não-metal",
+    group: 16,
+    period: 3,
+    summary: "Não-metal usado em fertilizantes, medicamentos e vulcanização.",
+    discovered_by: "Antiguidade",
+    source: "https://pt.wikipedia.org/wiki/Enxofre"
+  },
+  {
+    number: 17,
+    symbol: "Cl",
+    name: "Cloro",
+    atomic_mass: 35.45,
+    category: "halogênio",
+    group: 17,
+    period: 3,
+    summary: "Halogênio usado em desinfecção e produção de PVC.",
+    discovered_by: "Carl Wilhelm Scheele",
+    source: "https://pt.wikipedia.org/wiki/Cloro"
+  },
+  {
+    number: 18,
+    symbol: "Ar",
+    name: "Argônio",
+    atomic_mass: 39.948,
+    category: "gás nobre",
+    group: 18,
+    period: 3,
+    summary: "Gás nobre usado em soldagem e lâmpadas incandescentes.",
+    discovered_by: "Lord Rayleigh",
+    source: "https://pt.wikipedia.org/wiki/Arg%C3%B4nio"
   }
 ];
 

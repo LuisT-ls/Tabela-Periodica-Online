@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react';
 import { elements, Element } from '@/data/elements';
+import PeriodicTable from '@/components/PeriodicTable';
 
 // Função para obter a cor baseada na categoria do elemento
 const getCategoryColor = (category: string) => {
@@ -48,6 +49,7 @@ export default function TabelaPage() {
   const [showModal, setShowModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
+  const [viewMode, setViewMode] = useState<'organized' | 'list'>('organized');
 
   // Filtrar elementos baseado na pesquisa e categoria
   const filteredElements = useMemo(() => {
@@ -102,108 +104,140 @@ export default function TabelaPage() {
         </p>
       </div>
 
-      {/* Filtros e Pesquisa */}
+      {/* Seletor de Modo de Visualização */}
       <div className="bg-white dark:bg-dark-surface rounded-lg shadow-lg dark:shadow-xl dark:shadow-black/20 p-6 mb-8 border border-gray-200 dark:border-dark-border">
-        <h2 className="text-2xl font-bold text-primary dark:text-primary mb-4">Filtros e Pesquisa</h2>
+        <h2 className="text-2xl font-bold text-primary dark:text-primary mb-4">Modo de Visualização</h2>
 
-        <div className="row g-3">
-          {/* Barra de Pesquisa */}
-          <div className="col-md-6">
-            <label htmlFor="searchInput" className="form-label dark:text-dark-text">
-              <i className="fas fa-search me-2"></i>
-              Pesquisar Elementos
-            </label>
-            <input
-              type="text"
-              className="form-control dark:bg-dark-bg dark:text-dark-text dark:border-dark-border"
-              id="searchInput"
-              placeholder="Digite nome, símbolo ou número..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            <div className="form-text dark:text-dark-text-secondary">
-              Pesquise por nome, símbolo ou número atômico
-            </div>
-          </div>
-
-          {/* Dropdown de Categorias */}
-          <div className="col-md-4">
-            <label htmlFor="categorySelect" className="form-label dark:text-dark-text">
-              <i className="fas fa-filter me-2"></i>
-              Filtrar por Categoria
-            </label>
-            <select
-              className="form-select dark:bg-dark-bg dark:text-dark-text dark:border-dark-border"
-              id="categorySelect"
-              value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-            >
-              <option value="">Todas as categorias</option>
-              {getUniqueCategories().map(category => (
-                <option key={category} value={category}>
-                  {getCategoryName(category)}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Botão Limpar */}
-          <div className="col-md-2 d-flex align-items-end">
-            <button
-              type="button"
-              className="btn btn-outline-secondary w-100 dark:border-dark-border dark:text-dark-text dark:hover:bg-dark-border"
-              onClick={clearFilters}
-              disabled={searchTerm === '' && selectedCategory === ''}
-            >
-              <i className="fas fa-times me-2"></i>
-              Limpar
-            </button>
-          </div>
+        <div className="flex gap-4 mb-4">
+          <button
+            className={`px-4 py-2 rounded-lg font-medium transition-colors ${viewMode === 'organized'
+                ? 'bg-primary text-white'
+                : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+              }`}
+            onClick={() => setViewMode('organized')}
+          >
+            <i className="fas fa-table mr-2"></i>
+            Tabela Organizada
+          </button>
+          <button
+            className={`px-4 py-2 rounded-lg font-medium transition-colors ${viewMode === 'list'
+                ? 'bg-primary text-white'
+                : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+              }`}
+            onClick={() => setViewMode('list')}
+          >
+            <i className="fas fa-list mr-2"></i>
+            Lista com Filtros
+          </button>
         </div>
 
-        {/* Resultados da Pesquisa */}
-        <div className="mt-3">
-          <div className="alert alert-info d-flex align-items-center dark:bg-blue-900 dark:text-blue-100 dark:border-blue-700" role="alert">
-            <i className="fas fa-info-circle me-2"></i>
-            <div>
-              {filteredElements.length === elements.length ? (
-                `Mostrando todos os ${elements.length} elementos`
-              ) : (
-                `Encontrados ${filteredElements.length} de ${elements.length} elementos`
-              )}
+        {viewMode === 'list' && (
+          <>
+            <h3 className="text-xl font-bold text-primary dark:text-primary mb-4">Filtros e Pesquisa</h3>
+            <div className="row g-3">
+              {/* Barra de Pesquisa */}
+              <div className="col-md-6">
+                <label htmlFor="searchInput" className="form-label dark:text-dark-text">
+                  <i className="fas fa-search me-2"></i>
+                  Pesquisar Elementos
+                </label>
+                <input
+                  type="text"
+                  className="form-control dark:bg-dark-bg dark:text-dark-text dark:border-dark-border"
+                  id="searchInput"
+                  placeholder="Digite nome, símbolo ou número..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <div className="form-text dark:text-dark-text-secondary">
+                  Pesquise por nome, símbolo ou número atômico
+                </div>
+              </div>
+
+              {/* Dropdown de Categorias */}
+              <div className="col-md-4">
+                <label htmlFor="categorySelect" className="form-label dark:text-dark-text">
+                  <i className="fas fa-filter me-2"></i>
+                  Filtrar por Categoria
+                </label>
+                <select
+                  className="form-select dark:bg-dark-bg dark:text-dark-text dark:border-dark-border"
+                  id="categorySelect"
+                  value={selectedCategory}
+                  onChange={(e) => setSelectedCategory(e.target.value)}
+                >
+                  <option value="">Todas as categorias</option>
+                  {getUniqueCategories().map(category => (
+                    <option key={category} value={category}>
+                      {getCategoryName(category)}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Botão Limpar */}
+              <div className="col-md-2 d-flex align-items-end">
+                <button
+                  type="button"
+                  className="btn btn-outline-secondary w-100 dark:border-dark-border dark:text-dark-text dark:hover:bg-dark-border"
+                  onClick={clearFilters}
+                  disabled={searchTerm === '' && selectedCategory === ''}
+                >
+                  <i className="fas fa-times me-2"></i>
+                  Limpar
+                </button>
+              </div>
             </div>
-          </div>
-        </div>
-      </div>
 
-      {/* Lista de Elementos */}
-      <div className="bg-white dark:bg-dark-surface rounded-lg shadow-lg dark:shadow-xl dark:shadow-black/20 p-6 mb-8 border border-gray-200 dark:border-dark-border">
-        <h2 className="text-2xl font-bold text-primary dark:text-primary mb-4">
-          {filteredElements.length === elements.length ? 'Todos os Elementos' : 'Elementos Filtrados'}
-        </h2>
-
-        {filteredElements.length === 0 ? (
-          <div className="text-center py-8">
-            <i className="fas fa-search fa-3x text-muted dark:text-dark-text-secondary mb-3"></i>
-            <h4 className="text-muted dark:text-dark-text-secondary">Nenhum elemento encontrado</h4>
-            <p className="text-muted dark:text-dark-text-secondary">Tente ajustar os filtros de pesquisa</p>
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={clearFilters}
-            >
-              <i className="fas fa-times me-2"></i>
-              Limpar Filtros
-            </button>
-          </div>
-        ) : (
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-2">
-            {filteredElements.map((element, index) => (
-              <ElementCard key={index} element={element} />
-            ))}
-          </div>
+            {/* Resultados da Pesquisa */}
+            <div className="mt-3">
+              <div className="alert alert-info d-flex align-items-center dark:bg-blue-900 dark:text-blue-100 dark:border-blue-700" role="alert">
+                <i className="fas fa-info-circle me-2"></i>
+                <div>
+                  {filteredElements.length === elements.length ? (
+                    `Mostrando todos os ${elements.length} elementos`
+                  ) : (
+                    `Encontrados ${filteredElements.length} de ${elements.length} elementos`
+                  )}
+                </div>
+              </div>
+            </div>
+          </>
         )}
       </div>
+
+      {/* Conteúdo baseado no modo de visualização */}
+      {viewMode === 'organized' ? (
+        <PeriodicTable onElementClick={handleElementClick} />
+      ) : (
+        <div className="bg-white dark:bg-dark-surface rounded-lg shadow-lg dark:shadow-xl dark:shadow-black/20 p-6 mb-8 border border-gray-200 dark:border-dark-border">
+          <h2 className="text-2xl font-bold text-primary dark:text-primary mb-4">
+            {filteredElements.length === elements.length ? 'Todos os Elementos' : 'Elementos Filtrados'}
+          </h2>
+
+          {filteredElements.length === 0 ? (
+            <div className="text-center py-8">
+              <i className="fas fa-search fa-3x text-muted dark:text-dark-text-secondary mb-3"></i>
+              <h4 className="text-muted dark:text-dark-text-secondary">Nenhum elemento encontrado</h4>
+              <p className="text-muted dark:text-dark-text-secondary">Tente ajustar os filtros de pesquisa</p>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={clearFilters}
+              >
+                <i className="fas fa-times me-2"></i>
+                Limpar Filtros
+              </button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-2">
+              {filteredElements.map((element, index) => (
+                <ElementCard key={index} element={element} />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Legenda */}
       <div className="mt-8 grid md:grid-cols-2 lg:grid-cols-5 gap-4">

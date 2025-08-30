@@ -5,6 +5,7 @@ import Footer from '@/components/Footer';
 import BootstrapScript from '@/components/BootstrapScript.js';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 import '@/styles/globals.css';
+import '@/styles/periodic-table.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
