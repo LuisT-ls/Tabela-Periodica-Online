@@ -21,6 +21,8 @@ const getCategoryColor = (category: string) => {
   return colors[category] || 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 border-gray-300 dark:border-gray-500';
 };
 
+
+
 // Função para obter o nome da categoria em português
 const getCategoryName = (category: string) => {
   const names: { [key: string]: string } = {
@@ -76,6 +78,8 @@ interface PeriodicTableProps {
 export default function PeriodicTable({ onElementClick }: PeriodicTableProps) {
   const [selectedElement, setSelectedElement] = useState<Element | null>(null);
   const [showModal, setShowModal] = useState(false);
+  const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
+  const [tooltip, setTooltip] = useState<{ element: Element; x: number; y: number } | null>(null);
 
   const handleElementClick = (element: Element) => {
     setSelectedElement(element);
@@ -90,9 +94,24 @@ export default function PeriodicTable({ onElementClick }: PeriodicTableProps) {
     setSelectedElement(null);
   };
 
+  const handleElementMouseEnter = (element: Element, event: React.MouseEvent) => {
+    setHoveredCategory(element.category);
+    setTooltip({
+      element,
+      x: event.clientX,
+      y: event.clientY
+    });
+  };
+
+  const handleElementMouseLeave = () => {
+    setHoveredCategory(null);
+    setTooltip(null);
+  };
+
   const ElementCard = ({ element }: { element: Element }) => {
     const isLanthanideElement = isLanthanide(element.number);
     const isActinideElement = isActinide(element.number);
+    const isHighlighted = hoveredCategory === element.category;
 
     let gridStyle: React.CSSProperties = {};
 
@@ -105,12 +124,16 @@ export default function PeriodicTable({ onElementClick }: PeriodicTableProps) {
       gridStyle = getGridPosition(element.group, element.period);
     }
 
+    const baseClasses = `element-card ${getCategoryColor(element.category)}`;
+    const finalClasses = isHighlighted ? `${baseClasses} highlighted` : baseClasses;
+
     return (
       <div
-        className={`element-card ${getCategoryColor(element.category)}`}
+        className={finalClasses}
         style={gridStyle}
-        title={`${element.number}. ${element.name} (${element.symbol}) - ${element.atomic_mass} u`}
         onClick={() => handleElementClick(element)}
+        onMouseEnter={(e) => handleElementMouseEnter(element, e)}
+        onMouseLeave={handleElementMouseLeave}
       >
         <div className="element-number">{element.number}</div>
         <div className="element-symbol">{element.symbol}</div>
@@ -129,10 +152,10 @@ export default function PeriodicTable({ onElementClick }: PeriodicTableProps) {
     <div className="container mx-auto px-4 py-8">
       <div className="text-center mb-8">
         <h1 className="text-4xl font-bold text-primary dark:text-primary mb-4">
-          Tabela Periódica Organizada
+          Tabela Periódica Interativa
         </h1>
         <p className="text-lg text-muted dark:text-dark-text-secondary">
-          Visualize a tabela periódica organizada corretamente por grupos e períodos
+          Passe o mouse sobre os elementos para destacar categorias e clique para ver detalhes completos
         </p>
       </div>
 
@@ -202,61 +225,129 @@ export default function PeriodicTable({ onElementClick }: PeriodicTableProps) {
         ))}
       </div>
 
+      {/* Tooltip */}
+      {tooltip && (
+        <div
+          className="fixed z-50 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg p-3 text-sm pointer-events-none"
+          style={{
+            left: tooltip.x + 10,
+            top: tooltip.y - 10,
+            transform: 'translateY(-100%)'
+          }}
+        >
+          <div className="font-bold text-gray-900 dark:text-white">
+            {tooltip.element.number}. {tooltip.element.name}
+          </div>
+          <div className="text-gray-700 dark:text-gray-300">
+            Símbolo: <span className="font-mono">{tooltip.element.symbol}</span>
+          </div>
+          <div className="text-gray-700 dark:text-gray-300">
+            Massa: {tooltip.element.atomic_mass} u
+          </div>
+          <div className="text-gray-700 dark:text-gray-300">
+            Categoria: {getCategoryName(tooltip.element.category)}
+          </div>
+        </div>
+      )}
+
       {/* Modal */}
       {showModal && selectedElement && (
-        <div className="modal fade show d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-          <div className="modal-dialog modal-lg">
-            <div className="modal-content dark:bg-dark-surface dark:text-dark-text dark:border-dark-border">
-              <div className="modal-header dark:border-dark-border">
-                <h5 className="modal-title">
-                  {selectedElement.number}. {selectedElement.name} ({selectedElement.symbol})
-                </h5>
-                <button
-                  type="button"
-                  className="btn-close dark:filter-invert"
-                  onClick={closeModal}
-                  aria-label="Close"
-                ></button>
-              </div>
-              <div className="modal-body">
-                <div className="row">
-                  <div className="col-md-6">
-                    <h6>Informações Básicas</h6>
-                    <ul className="list-unstyled">
-                      <li><strong>Número Atômico:</strong> {selectedElement.number}</li>
-                      <li><strong>Símbolo:</strong> {selectedElement.symbol}</li>
-                      <li><strong>Nome:</strong> {selectedElement.name}</li>
-                      <li><strong>Massa Atômica:</strong> {selectedElement.atomic_mass} u</li>
-                      <li><strong>Grupo:</strong> {selectedElement.group}</li>
-                      <li><strong>Período:</strong> {selectedElement.period}</li>
-                      <li><strong>Categoria:</strong> {getCategoryName(selectedElement.category)}</li>
-                    </ul>
-                  </div>
-                  <div className="col-md-6">
-                    <h6>Descrição</h6>
-                    <p>{selectedElement.summary}</p>
-                    <h6>Descoberto por</h6>
-                    <p>{selectedElement.discovered_by}</p>
-                  </div>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            {/* Header do Modal */}
+            <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+              <div className="flex items-center space-x-4">
+                <div className={`w-12 h-12 rounded-lg flex items-center justify-center text-white font-bold text-lg ${getCategoryColor(selectedElement.category).split(' ')[0]}`}>
+                  {selectedElement.symbol}
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+                    {selectedElement.name}
+                  </h2>
+                  <p className="text-gray-600 dark:text-gray-400">
+                    Elemento {selectedElement.number}
+                  </p>
                 </div>
               </div>
-              <div className="modal-footer dark:border-dark-border">
-                <a
-                  href={selectedElement.source}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn btn-primary"
-                >
-                  Ver mais informações
-                </a>
-                <button
-                  type="button"
-                  className="btn btn-secondary dark:bg-dark-border dark:text-dark-text dark:hover:bg-gray-600"
-                  onClick={closeModal}
-                >
-                  Fechar
-                </button>
+              <button
+                onClick={closeModal}
+                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 text-2xl font-bold"
+              >
+                ×
+              </button>
+            </div>
+
+            {/* Conteúdo do Modal */}
+            <div className="p-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Informações Básicas */}
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                    Informações Básicas
+                  </h3>
+                  <div className="space-y-3">
+                    <div className="flex justify-between">
+                      <span className="text-gray-600 dark:text-gray-400">Número Atômico:</span>
+                      <span className="font-semibold text-gray-900 dark:text-white">{selectedElement.number}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600 dark:text-gray-400">Símbolo:</span>
+                      <span className="font-mono font-bold text-gray-900 dark:text-white">{selectedElement.symbol}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600 dark:text-gray-400">Massa Atômica:</span>
+                      <span className="font-semibold text-gray-900 dark:text-white">{selectedElement.atomic_mass} u</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600 dark:text-gray-400">Grupo:</span>
+                      <span className="font-semibold text-gray-900 dark:text-white">{selectedElement.group}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600 dark:text-gray-400">Período:</span>
+                      <span className="font-semibold text-gray-900 dark:text-white">{selectedElement.period}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600 dark:text-gray-400">Categoria:</span>
+                      <span className="font-semibold text-gray-900 dark:text-white">{getCategoryName(selectedElement.category)}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Informações Detalhadas */}
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                    Descrição
+                  </h3>
+                  <p className="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
+                    {selectedElement.summary}
+                  </p>
+
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                    Descoberta
+                  </h3>
+                  <p className="text-gray-700 dark:text-gray-300">
+                    Descoberto por: <span className="font-semibold">{selectedElement.discovered_by}</span>
+                  </p>
+                </div>
               </div>
+            </div>
+
+            {/* Footer do Modal */}
+            <div className="flex justify-end space-x-3 p-6 border-t border-gray-200 dark:border-gray-700">
+              <a
+                href={selectedElement.source}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Ver mais informações
+              </a>
+              <button
+                onClick={closeModal}
+                className="px-4 py-2 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-400 dark:hover:bg-gray-500 transition-colors"
+              >
+                Fechar
+              </button>
             </div>
           </div>
         </div>
