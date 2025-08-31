@@ -98,8 +98,34 @@
 
 /* Estilo para elementos destacados da mesma categoria */
 .element-card.highlighted {
-  transform: scale(1.12);
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2), 0 6px 15px rgba(0, 0, 0, 0.15);
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2), 0 0 0 3px rgba(59, 130, 246, 0.3);
+  z-index: 5;
+  position: relative;
+  animation: highlightPulse 2s infinite;
+}
+
+@keyframes highlightPulse {
+  0%, 100% {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2), 0 0 0 3px rgba(59, 130, 246, 0.3);
+  }
+  50% {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2), 0 0 0 3px rgba(59, 130, 246, 0.6);
+  }
+}
+
+/* Efeito de fade para elementos não destacados quando uma categoria está selecionada */
+.element-card:not(.highlighted) {
+  transition: all 0.3s ease;
+}
+
+.periodic-grid-main:has(.highlighted) .element-card:not(.highlighted),
+.lanthanides-grid:has(.highlighted) .element-card:not(.highlighted),
+.actinides-grid:has(.highlighted) .element-card:not(.highlighted) {
+  opacity: 0.4;
+  transform: scale(0.95);
+  filter: grayscale(0.3);
+  }
   z-index: 20;
   animation: elementPulse 2s infinite;
 }
@@ -1104,26 +1130,215 @@
   animation: elementPulse 2s infinite;
 }
 
-/* Melhorias visuais */
+/* Legenda Interativa */
 .periodic-table-legend {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 16px;
-  margin-top: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 0;
 }
 
 .legend-item {
-  padding: 16px;
-  border-radius: 12px;
-  text-align: center;
+  padding: 20px;
+  border-radius: 16px;
   border: 2px solid;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
 }
 
-.legend-item:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+.legend-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  border-radius: 14px;
+}
+
+.legend-item:hover,
+.legend-item.hovered {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+
+.legend-item:hover::before,
+.legend-item.hovered::before {
+  opacity: 1;
+}
+
+.legend-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  gap: 12px;
+}
+
+.legend-color-indicator {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 3px solid;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.legend-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0;
+  color: inherit;
+  text-align: left;
+}
+
+.legend-content {
+  text-align: left;
+}
+
+.legend-count {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: inherit;
+  opacity: 0.9;
+}
+
+.legend-description {
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: inherit;
+  opacity: 0.8;
+  margin-bottom: 8px;
+}
+
+.legend-stats {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.legend-stat {
+  font-size: 0.75rem;
+  color: inherit;
+  opacity: 0.7;
+  font-weight: 500;
+}
+
+.dark .legend-stats {
+  border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+.legend-hover-effect {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 1.2rem;
+  opacity: 0.7;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+/* Indicador de destaque */
+.highlight-indicator {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  border-radius: 12px;
+  padding: 16px 20px;
+  color: white;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+  animation: slideIn 0.3s ease-out;
+}
+
+.highlight-indicator-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 500;
+  gap: 12px;
+}
+
+.highlight-clear-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(10px);
+}
+
+.highlight-clear-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.dark .highlight-indicator {
+  background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+  box-shadow: 0 4px 15px rgba(29, 78, 216, 0.4);
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsividade da legenda */
+@media (max-width: 768px) {
+  .periodic-table-legend {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+  }
+  
+  .legend-item {
+    padding: 16px;
+  }
+  
+  .legend-title {
+    font-size: 1rem;
+  }
+  
+  .legend-count {
+    font-size: 0.85rem;
+  }
+  
+  .legend-description {
+    font-size: 0.8rem;
+  }
+  
+  .highlight-indicator-content {
+    font-size: 0.9rem;
+    text-align: center;
+  }
 }
 
 /* Melhorias para acessibilidade */

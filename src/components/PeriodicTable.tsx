@@ -38,6 +38,23 @@ const getCategoryName = (category: string) => {
   return names[category] || category;
 };
 
+// Função para obter a descrição da categoria
+const getCategoryDescription = (category: string) => {
+  const descriptions: { [key: string]: string } = {
+    'metal alcalino': 'Metais altamente reativos do grupo 1',
+    'metal alcalino-terroso': 'Metais reativos do grupo 2',
+    'metal de transição': 'Metais com propriedades variáveis',
+    'metal pós-transição': 'Metais com características intermediárias',
+    'semimetal': 'Elementos com propriedades entre metais e não-metais',
+    'não-metal': 'Elementos que não são metais',
+    'halogênio': 'Elementos altamente reativos do grupo 17',
+    'gás nobre': 'Gases inertes e estáveis',
+    'lantanídeo': 'Elementos da série dos lantanídeos',
+    'actinídeo': 'Elementos radioativos da série dos actinídeos'
+  };
+  return descriptions[category] || 'Categoria química';
+};
+
 // Função para verificar se é lantanídeo (57-71)
 const isLanthanide = (number: number) => number >= 57 && number <= 71;
 
@@ -79,6 +96,7 @@ export default function PeriodicTable({ onElementClick }: PeriodicTableProps) {
   const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
   const [tooltip, setTooltip] = useState<{ element: Element; x: number; y: number } | null>(null);
   const [activeTab, setActiveTab] = useState<'resumo' | 'propriedades' | 'historia'>('resumo');
+  const [legendHoveredCategory, setLegendHoveredCategory] = useState<string | null>(null);
 
   const handleElementClick = (element: Element) => {
     setSelectedElement(element);
@@ -108,8 +126,16 @@ export default function PeriodicTable({ onElementClick }: PeriodicTableProps) {
     setTooltip(null);
   };
 
+  const handleLegendMouseEnter = (category: string) => {
+    setLegendHoveredCategory(category);
+  };
+
+  const handleLegendMouseLeave = () => {
+    setLegendHoveredCategory(null);
+  };
+
   const ElementCard = ({ element, gridPosition }: { element: Element; gridPosition?: { gridColumn: number; gridRow: number } }) => {
-    const isHighlighted = hoveredCategory === element.category;
+    const isHighlighted = hoveredCategory === element.category || legendHoveredCategory === element.category;
 
     const baseClasses = `element-card`;
     const finalClasses = isHighlighted ? `${baseClasses} highlighted` : baseClasses;
@@ -213,27 +239,86 @@ export default function PeriodicTable({ onElementClick }: PeriodicTableProps) {
         </div>
       )}
 
-      {/* Legenda */}
-      <div className="periodic-table-legend">
-        {Object.entries({
-          'metal alcalino': 'Metais Alcalinos',
-          'metal alcalino-terroso': 'Metais Alcalino-Terrosos',
-          'metal de transição': 'Metais de Transição',
-          'metal pós-transição': 'Metais Pós-Transição',
-          'semimetal': 'Semimetais',
-          'não-metal': 'Não-Metais',
-          'halogênio': 'Halogênios',
-          'gás nobre': 'Gases Nobres',
-          'lantanídeo': 'Lantanídeos',
-          'actinídeo': 'Actinídeos'
-        }).map(([category, name]) => (
-          <div key={category} className={`legend-item ${getCategoryColor(category)}`}>
-            <h3 className="font-semibold mb-2 dark:text-gray-100">{name}</h3>
-            <p className="text-sm text-gray-700 dark:text-gray-300">
-              {elements.filter(el => el.category === category).length} elementos
-            </p>
+      {/* Legenda Interativa */}
+      <div className="bg-white dark:bg-dark-surface rounded-lg shadow-lg dark:shadow-xl dark:shadow-black/20 p-6 mb-8 border border-gray-200 dark:border-dark-border">
+        <h2 className="text-2xl font-bold text-primary dark:text-primary mb-6">
+          <i className="fas fa-palette me-3"></i>
+          Legenda das Categorias Químicas
+        </h2>
+        <p className="text-muted dark:text-dark-text-secondary mb-6">
+          Passe o mouse sobre as categorias para destacar todos os elementos correspondentes na tabela
+        </p>
+
+        {legendHoveredCategory && (
+          <div className="highlight-indicator mb-6">
+            <div className="highlight-indicator-content">
+              <i className="fas fa-eye me-2"></i>
+              <span>
+                Destacando <strong>{elements.filter(el => el.category === legendHoveredCategory).length} elementos</strong> da categoria{' '}
+                <strong>{getCategoryName(legendHoveredCategory)}</strong>
+              </span>
+              <button
+                onClick={handleLegendMouseLeave}
+                className="highlight-clear-btn"
+                title="Limpar destaque"
+              >
+                <i className="fas fa-times"></i>
+              </button>
+            </div>
           </div>
-        ))}
+        )}
+
+        <div className="periodic-table-legend">
+          {Object.entries({
+            'metal alcalino': 'Metais Alcalinos',
+            'metal alcalino-terroso': 'Metais Alcalino-Terrosos',
+            'metal de transição': 'Metais de Transição',
+            'metal pós-transição': 'Metais Pós-Transição',
+            'semimetal': 'Semimetais',
+            'não-metal': 'Não-Metais',
+            'halogênio': 'Halogênios',
+            'gás nobre': 'Gases Nobres',
+            'lantanídeo': 'Lantanídeos',
+            'actinídeo': 'Actinídeos'
+          }).map(([category, name]) => {
+            const elementCount = elements.filter(el => el.category === category).length;
+            const isHovered = legendHoveredCategory === category;
+
+            return (
+              <div
+                key={category}
+                className={`legend-item ${getCategoryColor(category)} ${isHovered ? 'hovered' : ''}`}
+                onMouseEnter={() => handleLegendMouseEnter(category)}
+                onMouseLeave={handleLegendMouseLeave}
+              >
+                <div className="legend-header">
+                  <div className="legend-color-indicator"></div>
+                  <h3 className="legend-title">{name}</h3>
+                </div>
+                <div className="legend-content">
+                  <div className="legend-count">
+                    <i className="fas fa-atom me-2"></i>
+                    {elementCount} elemento{elementCount !== 1 ? 's' : ''}
+                  </div>
+                  <div className="legend-description">
+                    {getCategoryDescription(category)}
+                  </div>
+                  <div className="legend-stats">
+                    <div className="legend-stat">
+                      <i className="fas fa-percentage me-1"></i>
+                      {((elementCount / elements.length) * 100).toFixed(1)}% da tabela
+                    </div>
+                  </div>
+                </div>
+                {isHovered && (
+                  <div className="legend-hover-effect">
+                    <i className="fas fa-mouse-pointer"></i>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
       </div>
 
       {/* Tooltip Moderno */}
