@@ -109,12 +109,13 @@ export default function PeriodicTable({ onElementClick }: PeriodicTableProps) {
   const ElementCard = ({ element, gridPosition }: { element: Element; gridPosition?: { gridColumn: number; gridRow: number } }) => {
     const isHighlighted = hoveredCategory === element.category;
 
-    const baseClasses = `element-card ${getCategoryColor(element.category)}`;
+    const baseClasses = `element-card`;
     const finalClasses = isHighlighted ? `${baseClasses} highlighted` : baseClasses;
 
     return (
       <div
         className={finalClasses}
+        data-category={element.category}
         style={gridPosition}
         onClick={() => handleElementClick(element)}
         onMouseEnter={(e) => handleElementMouseEnter(element, e)}
@@ -233,27 +234,40 @@ export default function PeriodicTable({ onElementClick }: PeriodicTableProps) {
         ))}
       </div>
 
-      {/* Tooltip */}
+      {/* Tooltip Moderno */}
       {tooltip && (
         <div
-          className="fixed z-50 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg p-3 text-sm pointer-events-none"
+          className="element-tooltip"
           style={{
-            left: tooltip.x + 10,
-            top: tooltip.y - 10,
+            left: tooltip.x + 15,
+            top: tooltip.y - 15,
             transform: 'translateY(-100%)'
           }}
         >
-          <div className="font-bold text-gray-900 dark:text-white">
-            {tooltip.element.number}. {tooltip.element.name}
+          <div className="tooltip-header">
+            <div className="tooltip-symbol">{tooltip.element.symbol}</div>
+            <div>
+              <div className="tooltip-number">#{tooltip.element.number}</div>
+              <div className="tooltip-name">{tooltip.element.name}</div>
+            </div>
           </div>
-          <div className="text-gray-700 dark:text-gray-300">
-            Símbolo: <span className="font-mono">{tooltip.element.symbol}</span>
-          </div>
-          <div className="text-gray-700 dark:text-gray-300">
-            Massa: {tooltip.element.atomic_mass} u
-          </div>
-          <div className="text-gray-700 dark:text-gray-300">
-            Categoria: {getCategoryName(tooltip.element.category)}
+          <div className="tooltip-details">
+            <div className="tooltip-detail">
+              <span className="tooltip-label">Massa Atômica:</span>
+              <span className="tooltip-value">{tooltip.element.atomic_mass} u</span>
+            </div>
+            <div className="tooltip-detail">
+              <span className="tooltip-label">Grupo:</span>
+              <span className="tooltip-value">{tooltip.element.group}</span>
+            </div>
+            <div className="tooltip-detail">
+              <span className="tooltip-label">Período:</span>
+              <span className="tooltip-value">{tooltip.element.period}</span>
+            </div>
+            <div className="tooltip-detail">
+              <span className="tooltip-label">Categoria:</span>
+              <span className="tooltip-value">{getCategoryName(tooltip.element.category)}</span>
+            </div>
           </div>
         </div>
       )}

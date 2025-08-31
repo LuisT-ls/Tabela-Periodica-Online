@@ -5,17 +5,19 @@
   display: grid;
   grid-template-columns: repeat(18, 1fr);
   grid-template-rows: repeat(7, auto);
-  gap: 2px;
+  gap: 3px;
   max-width: 100%;
   overflow-x: auto;
-  padding: 10px;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  border-radius: 12px;
+  padding: 15px;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  border-radius: 16px;
   min-height: 600px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
 }
 
 .dark .periodic-grid-main {
-  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 /* Grids para Lantanídeos e Actinídeos */
@@ -23,17 +25,19 @@
   display: grid;
   grid-template-columns: repeat(15, 1fr);
   grid-template-rows: 1fr;
-  gap: 2px;
+  gap: 3px;
   max-width: 100%;
   overflow-x: auto;
-  padding: 10px;
-  background: linear-gradient(135deg, #f8f9fa 0%, #dee2e6 100%);
-  border-radius: 8px;
-  min-height: 100px;
+  padding: 15px;
+  background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+  border-radius: 12px;
+  min-height: 120px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
 }
 
 .dark .lanthanides-grid, .dark .actinides-grid {
-  background: linear-gradient(135deg, #343a40 0%, #495057 100%);
+  background: linear-gradient(135deg, #334155 0%, #475569 100%);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 /* Células vazias para espaçamento correto */
@@ -43,18 +47,18 @@
   pointer-events: none;
 }
 
-/* Element Card */
+/* Element Card - Design Moderno */
 .element-card {
   aspect-ratio: 1;
   min-height: 80px;
-  border: 2px solid;
-  border-radius: 8px;
-  padding: 4px;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  padding: 6px;
   text-align: center;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   transform: scale(1);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -62,8 +66,10 @@
   font-family: 'Inter', sans-serif;
   position: relative;
   overflow: hidden;
+  backdrop-filter: blur(10px);
 }
 
+/* Efeito de brilho interno */
 .element-card::before {
   content: '';
   position: absolute;
@@ -71,15 +77,17 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(255, 255, 255, 0.1);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
   opacity: 0;
   transition: opacity 0.3s ease;
   pointer-events: none;
+  border-radius: 10px;
 }
 
+/* Hover Effects */
 .element-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  transform: scale(1.08);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15), 0 4px 10px rgba(0, 0, 0, 0.1);
   z-index: 10;
   position: relative;
 }
@@ -90,122 +98,416 @@
 
 /* Estilo para elementos destacados da mesma categoria */
 .element-card.highlighted {
-  transform: scale(1.08);
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+  transform: scale(1.12);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2), 0 6px 15px rgba(0, 0, 0, 0.15);
   z-index: 20;
-  animation: pulse 2s infinite;
+  animation: elementPulse 2s infinite;
 }
 
 .element-card.highlighted::before {
   opacity: 1;
-  background: rgba(255, 255, 255, 0.2);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%);
 }
 
-@keyframes pulse {
+@keyframes elementPulse {
   0%, 100% {
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2), 0 6px 15px rgba(0, 0, 0, 0.15);
   }
   50% {
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3), 0 0 0 4px rgba(59, 130, 246, 0.1);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3), 0 6px 15px rgba(0, 0, 0, 0.2), 0 0 0 4px rgba(59, 130, 246, 0.1);
   }
 }
 
+/* Paleta de Cores Elegante por Categoria */
+.element-card[data-category="metal alcalino"] {
+  background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%);
+  border-color: #f87171;
+  color: #991b1b;
+}
+
+.element-card[data-category="metal alcalino"]:hover {
+  border-color: #ef4444;
+  box-shadow: 0 8px 25px rgba(239, 68, 68, 0.2), 0 4px 10px rgba(239, 68, 68, 0.1);
+}
+
+.element-card[data-category="metal alcalino-terroso"] {
+  background: linear-gradient(135deg, #fffbeb 0%, #fed7aa 100%);
+  border-color: #f59e0b;
+  color: #92400e;
+}
+
+.element-card[data-category="metal alcalino-terroso"]:hover {
+  border-color: #f97316;
+  box-shadow: 0 8px 25px rgba(249, 115, 22, 0.2), 0 4px 10px rgba(249, 115, 22, 0.1);
+}
+
+.element-card[data-category="metal de transição"] {
+  background: linear-gradient(135deg, #eff6ff 0%, #bfdbfe 100%);
+  border-color: #3b82f6;
+  color: #1e40af;
+}
+
+.element-card[data-category="metal de transição"]:hover {
+  border-color: #2563eb;
+  box-shadow: 0 8px 25px rgba(37, 99, 235, 0.2), 0 4px 10px rgba(37, 99, 235, 0.1);
+}
+
+.element-card[data-category="metal pós-transição"] {
+  background: linear-gradient(135deg, #f0fdf4 0%, #bbf7d0 100%);
+  border-color: #22c55e;
+  color: #15803d;
+}
+
+.element-card[data-category="metal pós-transição"]:hover {
+  border-color: #16a34a;
+  box-shadow: 0 8px 25px rgba(22, 163, 74, 0.2), 0 4px 10px rgba(22, 163, 74, 0.1);
+}
+
+.element-card[data-category="semimetal"] {
+  background: linear-gradient(135deg, #fefce8 0%, #fef08a 100%);
+  border-color: #eab308;
+  color: #a16207;
+}
+
+.element-card[data-category="semimetal"]:hover {
+  border-color: #ca8a04;
+  box-shadow: 0 8px 25px rgba(202, 138, 4, 0.2), 0 4px 10px rgba(202, 138, 4, 0.1);
+}
+
+.element-card[data-category="não-metal"] {
+  background: linear-gradient(135deg, #faf5ff 0%, #e9d5ff 100%);
+  border-color: #a855f7;
+  color: #7c3aed;
+}
+
+.element-card[data-category="não-metal"]:hover {
+  border-color: #9333ea;
+  box-shadow: 0 8px 25px rgba(147, 51, 234, 0.2), 0 4px 10px rgba(147, 51, 234, 0.1);
+}
+
+.element-card[data-category="halogênio"] {
+  background: linear-gradient(135deg, #fdf2f8 0%, #fbcfe8 100%);
+  border-color: #ec4899;
+  color: #be185d;
+}
+
+.element-card[data-category="halogênio"]:hover {
+  border-color: #db2777;
+  box-shadow: 0 8px 25px rgba(219, 39, 119, 0.2), 0 4px 10px rgba(219, 39, 119, 0.1);
+}
+
+.element-card[data-category="gás nobre"] {
+  background: linear-gradient(135deg, #ecfeff 0%, #a5f3fc 100%);
+  border-color: #06b6d4;
+  color: #0e7490;
+}
+
+.element-card[data-category="gás nobre"]:hover {
+  border-color: #0891b2;
+  box-shadow: 0 8px 25px rgba(8, 145, 178, 0.2), 0 4px 10px rgba(8, 145, 178, 0.1);
+}
+
+.element-card[data-category="lantanídeo"] {
+  background: linear-gradient(135deg, #eef2ff 0%, #c7d2fe 100%);
+  border-color: #6366f1;
+  color: #4338ca;
+}
+
+.element-card[data-category="lantanídeo"]:hover {
+  border-color: #4f46e5;
+  box-shadow: 0 8px 25px rgba(79, 70, 229, 0.2), 0 4px 10px rgba(79, 70, 229, 0.1);
+}
+
+.element-card[data-category="actinídeo"] {
+  background: linear-gradient(135deg, #f8fafc 0%, #cbd5e1 100%);
+  border-color: #64748b;
+  color: #475569;
+}
+
+.element-card[data-category="actinídeo"]:hover {
+  border-color: #475569;
+  box-shadow: 0 8px 25px rgba(71, 85, 105, 0.2), 0 4px 10px rgba(71, 85, 105, 0.1);
+}
+
+/* Dark Mode - Ajustes de cores */
+.dark .element-card[data-category="metal alcalino"] {
+  background: linear-gradient(135deg, #450a0a 0%, #7f1d1d 100%);
+  color: #fecaca;
+}
+
+.dark .element-card[data-category="metal alcalino-terroso"] {
+  background: linear-gradient(135deg, #451a03 0%, #78350f 100%);
+  color: #fed7aa;
+}
+
+.dark .element-card[data-category="metal de transição"] {
+  background: linear-gradient(135deg, #0c4a6e 0%, #1e3a8a 100%);
+  color: #bfdbfe;
+}
+
+.dark .element-card[data-category="metal pós-transição"] {
+  background: linear-gradient(135deg, #052e16 0%, #14532d 100%);
+  color: #bbf7d0;
+}
+
+.dark .element-card[data-category="semimetal"] {
+  background: linear-gradient(135deg, #451a03 0%, #78350f 100%);
+  color: #fef08a;
+}
+
+.dark .element-card[data-category="não-metal"] {
+  background: linear-gradient(135deg, #581c87 0%, #7c3aed 100%);
+  color: #e9d5ff;
+}
+
+.dark .element-card[data-category="halogênio"] {
+  background: linear-gradient(135deg, #831843 0%, #be185d 100%);
+  color: #fbcfe8;
+}
+
+.dark .element-card[data-category="gás nobre"] {
+  background: linear-gradient(135deg, #164e63 0%, #0e7490 100%);
+  color: #a5f3fc;
+}
+
+.dark .element-card[data-category="lantanídeo"] {
+  background: linear-gradient(135deg, #312e81 0%, #4338ca 100%);
+  color: #c7d2fe;
+}
+
+.dark .element-card[data-category="actinídeo"] {
+  background: linear-gradient(135deg, #1e293b 0%, #475569 100%);
+  color: #cbd5e1;
+}
+
+/* Conteúdo dos Elementos */
 .element-number {
-  font-size: 0.6rem;
+  font-size: 0.65rem;
   font-weight: 700;
-  opacity: 0.7;
+  opacity: 0.8;
   line-height: 1;
   margin-bottom: 2px;
-  transition: opacity 0.3s ease;
+  transition: all 0.3s ease;
+  letter-spacing: 0.5px;
 }
 
 .element-symbol {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   font-weight: 900;
   line-height: 1;
   margin-bottom: 2px;
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease;
+  letter-spacing: 0.5px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .element-card:hover .element-symbol {
-  transform: scale(1.1);
+  transform: scale(1.15);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .element-name {
-  font-size: 0.55rem;
-  font-weight: 500;
+  font-size: 0.6rem;
+  font-weight: 600;
   line-height: 1;
   margin-bottom: 2px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   max-width: 100%;
-  transition: opacity 0.3s ease;
+  transition: all 0.3s ease;
+  letter-spacing: 0.3px;
 }
 
 .element-mass {
-  font-size: 0.5rem;
-  opacity: 0.6;
+  font-size: 0.55rem;
+  opacity: 0.7;
   line-height: 1;
-  transition: opacity 0.3s ease;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+}
+
+/* Tooltip Moderno */
+.element-tooltip {
+  position: fixed;
+  z-index: 1000;
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 12px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  padding: 12px 16px;
+  font-size: 0.875rem;
+  pointer-events: none;
+  max-width: 280px;
+  animation: tooltipFadeIn 0.2s ease-out;
+  color: #f8fafc;
+}
+
+.dark .element-tooltip {
+  background: rgba(30, 41, 59, 0.95);
+  border-color: rgba(71, 85, 105, 0.3);
+}
+
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.tooltip-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.tooltip-symbol {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #60a5fa;
+}
+
+.tooltip-number {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #94a3b8;
+}
+
+.tooltip-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #f1f5f9;
+}
+
+.tooltip-details {
+  display: grid;
+  gap: 4px;
+}
+
+.tooltip-detail {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+}
+
+.tooltip-label {
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+.tooltip-value {
+  color: #f1f5f9;
+  font-weight: 600;
 }
 
 /* Responsividade - Desktop */
 @media (min-width: 1200px) {
   .periodic-grid-main {
-    gap: 3px;
-    padding: 15px;
+    gap: 4px;
+    padding: 20px;
   }
   
   .element-card {
-    min-height: 90px;
-    padding: 6px;
+    min-height: 100px;
+    padding: 8px;
+    border-radius: 14px;
   }
   
   .element-symbol {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
   }
   
   .element-number, .element-name, .element-mass {
-    font-size: 0.65rem;
+    font-size: 0.7rem;
   }
 }
 
 /* Responsividade - Tablet */
 @media (max-width: 1199px) and (min-width: 768px) {
   .periodic-grid-main {
-    gap: 2px;
-    padding: 10px;
+    gap: 3px;
+    padding: 15px;
   }
   
   .element-card {
-    min-height: 70px;
-    padding: 4px;
+    min-height: 80px;
+    padding: 6px;
+    border-radius: 12px;
   }
   
   .element-symbol {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
   }
   
   .element-number, .element-name, .element-mass {
-    font-size: 0.55rem;
+    font-size: 0.6rem;
   }
 }
 
 /* Responsividade - Mobile */
 @media (max-width: 767px) {
   .periodic-grid-main {
-    grid-template-columns: repeat(18, minmax(35px, 1fr));
-    gap: 1px;
-    padding: 5px;
+    grid-template-columns: repeat(18, minmax(40px, 1fr));
+    gap: 2px;
+    padding: 10px;
     overflow-x: auto;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
   }
   
   .element-card {
+    min-height: 60px;
+    padding: 4px;
+    border-radius: 10px;
+  }
+  
+  .element-symbol {
+    font-size: 1rem;
+  }
+  
+  .element-number, .element-name, .element-mass {
+    font-size: 0.5rem;
+  }
+  
+  /* Melhorar scroll horizontal em mobile */
+  .periodic-grid-main::-webkit-scrollbar {
+    height: 8px;
+  }
+  
+  .periodic-grid-main::-webkit-scrollbar-track {
+    background: rgba(148, 163, 184, 0.1);
+    border-radius: 4px;
+  }
+  
+  .periodic-grid-main::-webkit-scrollbar-thumb {
+    background: rgba(148, 163, 184, 0.3);
+    border-radius: 4px;
+  }
+  
+  .periodic-grid-main::-webkit-scrollbar-thumb:hover {
+    background: rgba(148, 163, 184, 0.5);
+  }
+}
+
+@media (max-width: 480px) {
+  .periodic-grid-main {
+    grid-template-columns: repeat(18, minmax(35px, 1fr));
+  }
+  
+  .element-card {
     min-height: 50px;
-    padding: 2px;
+    padding: 3px;
+    border-radius: 8px;
   }
   
   .element-symbol {
@@ -214,44 +516,6 @@
   
   .element-number, .element-name, .element-mass {
     font-size: 0.45rem;
-  }
-  
-  /* Melhorar scroll horizontal em mobile */
-  .periodic-grid-main::-webkit-scrollbar {
-    height: 6px;
-  }
-  
-  .periodic-grid-main::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 3px;
-  }
-  
-  .periodic-grid-main::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 3px;
-  }
-  
-  .periodic-grid-main::-webkit-scrollbar-thumb:hover {
-    background: #555;
-  }
-}
-
-@media (max-width: 480px) {
-  .periodic-grid-main {
-    grid-template-columns: repeat(18, minmax(30px, 1fr));
-  }
-  
-  .element-card {
-    min-height: 40px;
-    padding: 1px;
-  }
-  
-  .element-symbol {
-    font-size: 0.8rem;
-  }
-  
-  .element-number, .element-name, .element-mass {
-    font-size: 0.4rem;
   }
 }
 
@@ -275,60 +539,31 @@
 /* Melhorias visuais */
 .periodic-table-legend {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 12px;
-  margin-top: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-top: 24px;
 }
 
 .legend-item {
-  padding: 12px;
-  border-radius: 8px;
+  padding: 16px;
+  border-radius: 12px;
   text-align: center;
   border: 2px solid;
-  transition: transform 0.2s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .legend-item:hover {
-  transform: translateY(-2px);
-}
-
-/* Estilos para o tooltip */
-.tooltip {
-  position: fixed;
-  z-index: 50;
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-  padding: 12px;
-  font-size: 0.875rem;
-  pointer-events: none;
-  max-width: 250px;
-  animation: tooltipFadeIn 0.2s ease-out;
-}
-
-.dark .tooltip {
-  background: #1f2937;
-  border-color: #374151;
-  color: #f9fafb;
-}
-
-@keyframes tooltipFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px) scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
 /* Estilos para o modal */
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -339,7 +574,7 @@
 
 .modal-content {
   background: white;
-  border-radius: 12px;
+  border-radius: 16px;
   box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
   max-width: 32rem;
   width: 100%;
@@ -388,10 +623,11 @@
 /* Estilos para elementos vazios na tabela */
 .empty-cell {
   background: transparent;
-  border: 1px dashed rgba(0, 0, 0, 0.1);
+  border: 1px dashed rgba(148, 163, 184, 0.2);
   pointer-events: none;
+  border-radius: 8px;
 }
 
 .dark .empty-cell {
-  border-color: rgba(255, 255, 255, 0.1);
+  border-color: rgba(71, 85, 105, 0.3);
 }
