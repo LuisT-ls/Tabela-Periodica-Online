@@ -1,6 +1,7 @@
 /* Estilos para a Tabela Periódica */
 
-.periodic-grid {
+/* Tabela Periódica Principal - Grid de 18 colunas */
+.periodic-grid-main {
   display: grid;
   grid-template-columns: repeat(18, 1fr);
   grid-template-rows: repeat(7, auto);
@@ -10,12 +11,14 @@
   padding: 10px;
   background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
   border-radius: 12px;
+  min-height: 600px;
 }
 
-.dark .periodic-grid {
+.dark .periodic-grid-main {
   background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
 }
 
+/* Grids para Lantanídeos e Actinídeos */
 .lanthanides-grid, .actinides-grid {
   display: grid;
   grid-template-columns: repeat(15, 1fr);
@@ -26,12 +29,21 @@
   padding: 10px;
   background: linear-gradient(135deg, #f8f9fa 0%, #dee2e6 100%);
   border-radius: 8px;
+  min-height: 100px;
 }
 
 .dark .lanthanides-grid, .dark .actinides-grid {
   background: linear-gradient(135deg, #343a40 0%, #495057 100%);
 }
 
+/* Células vazias para espaçamento correto */
+.empty-cell {
+  background: transparent;
+  border: none;
+  pointer-events: none;
+}
+
+/* Element Card */
 .element-card {
   aspect-ratio: 1;
   min-height: 80px;
@@ -138,12 +150,57 @@
   transition: opacity 0.3s ease;
 }
 
-/* Responsividade */
-@media (max-width: 768px) {
-  .periodic-grid {
-    grid-template-columns: repeat(18, minmax(40px, 1fr));
+/* Responsividade - Desktop */
+@media (min-width: 1200px) {
+  .periodic-grid-main {
+    gap: 3px;
+    padding: 15px;
+  }
+  
+  .element-card {
+    min-height: 90px;
+    padding: 6px;
+  }
+  
+  .element-symbol {
+    font-size: 1.4rem;
+  }
+  
+  .element-number, .element-name, .element-mass {
+    font-size: 0.65rem;
+  }
+}
+
+/* Responsividade - Tablet */
+@media (max-width: 1199px) and (min-width: 768px) {
+  .periodic-grid-main {
+    gap: 2px;
+    padding: 10px;
+  }
+  
+  .element-card {
+    min-height: 70px;
+    padding: 4px;
+  }
+  
+  .element-symbol {
+    font-size: 1.1rem;
+  }
+  
+  .element-number, .element-name, .element-mass {
+    font-size: 0.55rem;
+  }
+}
+
+/* Responsividade - Mobile */
+@media (max-width: 767px) {
+  .periodic-grid-main {
+    grid-template-columns: repeat(18, minmax(35px, 1fr));
     gap: 1px;
     padding: 5px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
   }
   
   .element-card {
@@ -158,11 +215,30 @@
   .element-number, .element-name, .element-mass {
     font-size: 0.45rem;
   }
+  
+  /* Melhorar scroll horizontal em mobile */
+  .periodic-grid-main::-webkit-scrollbar {
+    height: 6px;
+  }
+  
+  .periodic-grid-main::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+  }
+  
+  .periodic-grid-main::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+  }
+  
+  .periodic-grid-main::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
 }
 
 @media (max-width: 480px) {
-  .periodic-grid {
-    grid-template-columns: repeat(18, minmax(35px, 1fr));
+  .periodic-grid-main {
+    grid-template-columns: repeat(18, minmax(30px, 1fr));
   }
   
   .element-card {
@@ -295,4 +371,27 @@
     opacity: 1;
     transform: translateY(0) scale(1);
   }
+}
+
+/* Melhorias para acessibilidade */
+.element-card:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Indicadores visuais para elementos especiais */
+.element-card[data-category="lantanídeo"],
+.element-card[data-category="actinídeo"] {
+  border-width: 3px;
+}
+
+/* Estilos para elementos vazios na tabela */
+.empty-cell {
+  background: transparent;
+  border: 1px dashed rgba(0, 0, 0, 0.1);
+  pointer-events: none;
+}
+
+.dark .empty-cell {
+  border-color: rgba(255, 255, 255, 0.1);
 }

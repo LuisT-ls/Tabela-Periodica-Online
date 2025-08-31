@@ -21,8 +21,6 @@ const getCategoryColor = (category: string) => {
   return colors[category] || 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 border-gray-300 dark:border-gray-500';
 };
 
-
-
 // Função para obter o nome da categoria em português
 const getCategoryName = (category: string) => {
   const names: { [key: string]: string } = {
@@ -40,35 +38,35 @@ const getCategoryName = (category: string) => {
   return names[category] || category;
 };
 
-// Função para obter a posição no grid baseada no grupo e período
-const getGridPosition = (group: number, period: number) => {
-  return {
-    gridColumn: group,
-    gridRow: period
-  };
-};
-
 // Função para verificar se é lantanídeo (57-71)
 const isLanthanide = (number: number) => number >= 57 && number <= 71;
 
 // Função para verificar se é actinídeo (89-103)
 const isActinide = (number: number) => number >= 89 && number <= 103;
 
-// Função para obter a posição dos lantanídeos e actinídeos
-const getLanthanideActinidePosition = (number: number) => {
-  if (isLanthanide(number)) {
-    return {
-      gridColumn: number - 56 + 3, // Começa na coluna 3 (grupo 3)
-      gridRow: 8 // Período 8 (abaixo do período 7)
-    };
+// Função para obter a posição no grid da tabela principal
+const getMainGridPosition = (element: Element) => {
+  // Elementos especiais que não seguem o padrão normal
+  const specialPositions: { [key: number]: { gridColumn: number; gridRow: number } } = {
+    // Hélio no grupo 18, período 1
+    2: { gridColumn: 18, gridRow: 1 },
+    // Lantanídeos e Actinídeos não aparecem na tabela principal
+  };
+
+  if (specialPositions[element.number]) {
+    return specialPositions[element.number];
   }
-  if (isActinide(number)) {
-    return {
-      gridColumn: number - 88 + 3, // Começa na coluna 3 (grupo 3)
-      gridRow: 9 // Período 9 (abaixo dos lantanídeos)
-    };
+
+  // Para lantanídeos e actinídeos, não retornar posição (serão mostrados separadamente)
+  if (isLanthanide(element.number) || isActinide(element.number)) {
+    return null;
   }
-  return null;
+
+  // Posicionamento padrão baseado em grupo e período
+  return {
+    gridColumn: element.group,
+    gridRow: element.period
+  };
 };
 
 interface PeriodicTableProps {
@@ -108,21 +106,8 @@ export default function PeriodicTable({ onElementClick }: PeriodicTableProps) {
     setTooltip(null);
   };
 
-  const ElementCard = ({ element }: { element: Element }) => {
-    const isLanthanideElement = isLanthanide(element.number);
-    const isActinideElement = isActinide(element.number);
+  const ElementCard = ({ element, gridPosition }: { element: Element; gridPosition?: { gridColumn: number; gridRow: number } }) => {
     const isHighlighted = hoveredCategory === element.category;
-
-    let gridStyle: React.CSSProperties = {};
-
-    if (isLanthanideElement || isActinideElement) {
-      const position = getLanthanideActinidePosition(element.number);
-      if (position) {
-        gridStyle = position;
-      }
-    } else {
-      gridStyle = getGridPosition(element.group, element.period);
-    }
 
     const baseClasses = `element-card ${getCategoryColor(element.category)}`;
     const finalClasses = isHighlighted ? `${baseClasses} highlighted` : baseClasses;
@@ -130,7 +115,7 @@ export default function PeriodicTable({ onElementClick }: PeriodicTableProps) {
     return (
       <div
         className={finalClasses}
-        style={gridStyle}
+        style={gridPosition}
         onClick={() => handleElementClick(element)}
         onMouseEnter={(e) => handleElementMouseEnter(element, e)}
         onMouseLeave={handleElementMouseLeave}
@@ -143,7 +128,7 @@ export default function PeriodicTable({ onElementClick }: PeriodicTableProps) {
     );
   };
 
-  // Separar elementos em grupos
+  // Separar elementos
   const mainElements = elements.filter(el => !isLanthanide(el.number) && !isActinide(el.number));
   const lanthanides = elements.filter(el => isLanthanide(el.number));
   const actinides = elements.filter(el => isActinide(el.number));
@@ -165,10 +150,19 @@ export default function PeriodicTable({ onElementClick }: PeriodicTableProps) {
           Tabela Periódica Principal
         </h2>
 
-        <div className="periodic-grid">
-          {mainElements.map((element, index) => (
-            <ElementCard key={index} element={element} />
-          ))}
+        <div className="periodic-grid-main">
+          {mainElements.map((element, index) => {
+            const gridPosition = getMainGridPosition(element);
+            if (!gridPosition) return null; // Pular lantanídeos e actinídeos
+
+            return (
+              <ElementCard
+                key={`main-${element.number}`}
+                element={element}
+                gridPosition={gridPosition}
+              />
+            );
+          })}
         </div>
       </div>
 
@@ -178,10 +172,17 @@ export default function PeriodicTable({ onElementClick }: PeriodicTableProps) {
           <h2 className="text-2xl font-bold text-primary dark:text-primary mb-4">
             Lantanídeos (57-71)
           </h2>
+          <p className="text-sm text-muted dark:text-dark-text-secondary mb-4">
+            Elementos da série dos lantanídeos, também conhecidos como terras raras
+          </p>
 
           <div className="lanthanides-grid">
             {lanthanides.map((element, index) => (
-              <ElementCard key={index} element={element} />
+              <ElementCard
+                key={`lanthanide-${element.number}`}
+                element={element}
+                gridPosition={{ gridColumn: index + 1, gridRow: 1 }}
+              />
             ))}
           </div>
         </div>
@@ -193,10 +194,17 @@ export default function PeriodicTable({ onElementClick }: PeriodicTableProps) {
           <h2 className="text-2xl font-bold text-primary dark:text-primary mb-4">
             Actinídeos (89-103)
           </h2>
+          <p className="text-sm text-muted dark:text-dark-text-secondary mb-4">
+            Elementos da série dos actinídeos, todos radioativos
+          </p>
 
           <div className="actinides-grid">
             {actinides.map((element, index) => (
-              <ElementCard key={index} element={element} />
+              <ElementCard
+                key={`actinide-${element.number}`}
+                element={element}
+                gridPosition={{ gridColumn: index + 1, gridRow: 1 }}
+              />
             ))}
           </div>
         </div>
