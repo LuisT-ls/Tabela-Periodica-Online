@@ -78,10 +78,12 @@ export default function PeriodicTable({ onElementClick }: PeriodicTableProps) {
   const [showModal, setShowModal] = useState(false);
   const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
   const [tooltip, setTooltip] = useState<{ element: Element; x: number; y: number } | null>(null);
+  const [activeTab, setActiveTab] = useState<'resumo' | 'propriedades' | 'historia'>('resumo');
 
   const handleElementClick = (element: Element) => {
     setSelectedElement(element);
     setShowModal(true);
+    setActiveTab('resumo'); // Reset para a primeira tab
     if (onElementClick) {
       onElementClick(element);
     }
@@ -272,104 +274,187 @@ export default function PeriodicTable({ onElementClick }: PeriodicTableProps) {
         </div>
       )}
 
-      {/* Modal */}
+      {/* Modal Moderno */}
       {showModal && selectedElement && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             {/* Header do Modal */}
-            <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
-              <div className="flex items-center space-x-4">
-                <div className={`w-12 h-12 rounded-lg flex items-center justify-center text-white font-bold text-lg ${getCategoryColor(selectedElement.category).split(' ')[0]}`}>
-                  {selectedElement.symbol}
+            <div className="modal-header">
+              <div className="modal-header-content">
+                <div className="modal-symbol-container" data-category={selectedElement.category}>
+                  <div className="modal-symbol">{selectedElement.symbol}</div>
+                  <div className="modal-number">#{selectedElement.number}</div>
                 </div>
-                <div>
-                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-                    {selectedElement.name}
-                  </h2>
-                  <p className="text-gray-600 dark:text-gray-400">
-                    Elemento {selectedElement.number}
-                  </p>
+                <div className="modal-title-section">
+                  <h2 className="modal-title">{selectedElement.name}</h2>
+                  <p className="modal-category">{getCategoryName(selectedElement.category)}</p>
                 </div>
               </div>
               <button
                 onClick={closeModal}
-                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 text-2xl font-bold"
+                className="modal-close-btn"
+                aria-label="Fechar modal"
               >
-                ×
+                <i className="fas fa-times"></i>
               </button>
             </div>
 
-            {/* Conteúdo do Modal */}
-            <div className="p-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Informações Básicas */}
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                    Informações Básicas
-                  </h3>
-                  <div className="space-y-3">
-                    <div className="flex justify-between">
-                      <span className="text-gray-600 dark:text-gray-400">Número Atômico:</span>
-                      <span className="font-semibold text-gray-900 dark:text-white">{selectedElement.number}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600 dark:text-gray-400">Símbolo:</span>
-                      <span className="font-mono font-bold text-gray-900 dark:text-white">{selectedElement.symbol}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600 dark:text-gray-400">Massa Atômica:</span>
-                      <span className="font-semibold text-gray-900 dark:text-white">{selectedElement.atomic_mass} u</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600 dark:text-gray-400">Grupo:</span>
-                      <span className="font-semibold text-gray-900 dark:text-white">{selectedElement.group}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600 dark:text-gray-400">Período:</span>
-                      <span className="font-semibold text-gray-900 dark:text-white">{selectedElement.period}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600 dark:text-gray-400">Categoria:</span>
-                      <span className="font-semibold text-gray-900 dark:text-white">{getCategoryName(selectedElement.category)}</span>
+            {/* Tabs */}
+            <div className="modal-tabs">
+              <button
+                className={`modal-tab ${activeTab === 'resumo' ? 'active' : ''}`}
+                onClick={() => setActiveTab('resumo')}
+              >
+                <i className="fas fa-info-circle me-2"></i>
+                Resumo
+              </button>
+              <button
+                className={`modal-tab ${activeTab === 'propriedades' ? 'active' : ''}`}
+                onClick={() => setActiveTab('propriedades')}
+              >
+                <i className="fas fa-atom me-2"></i>
+                Propriedades
+              </button>
+              <button
+                className={`modal-tab ${activeTab === 'historia' ? 'active' : ''}`}
+                onClick={() => setActiveTab('historia')}
+              >
+                <i className="fas fa-history me-2"></i>
+                História
+              </button>
+            </div>
+
+            {/* Conteúdo das Tabs */}
+            <div className="modal-body">
+              {/* Tab Resumo */}
+              {activeTab === 'resumo' && (
+                <div className="tab-content">
+                  <div className="summary-section">
+                    <h3 className="section-title">
+                      <i className="fas fa-book-open me-2"></i>
+                      Descrição
+                    </h3>
+                    <p className="summary-text">{selectedElement.summary}</p>
+                  </div>
+
+                  <div className="quick-info-section">
+                    <h3 className="section-title">
+                      <i className="fas fa-chart-bar me-2"></i>
+                      Informações Rápidas
+                    </h3>
+                    <div className="quick-info-grid">
+                      <div className="info-item">
+                        <span className="info-label">Massa Atômica</span>
+                        <span className="info-value">{selectedElement.atomic_mass} u</span>
+                      </div>
+                      <div className="info-item">
+                        <span className="info-label">Grupo</span>
+                        <span className="info-value">{selectedElement.group}</span>
+                      </div>
+                      <div className="info-item">
+                        <span className="info-label">Período</span>
+                        <span className="info-value">{selectedElement.period}</span>
+                      </div>
+                      <div className="info-item">
+                        <span className="info-label">Categoria</span>
+                        <span className="info-value">{getCategoryName(selectedElement.category)}</span>
+                      </div>
                     </div>
                   </div>
                 </div>
+              )}
 
-                {/* Informações Detalhadas */}
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                    Descrição
-                  </h3>
-                  <p className="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
-                    {selectedElement.summary}
-                  </p>
-
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-                    Descoberta
-                  </h3>
-                  <p className="text-gray-700 dark:text-gray-300">
-                    Descoberto por: <span className="font-semibold">{selectedElement.discovered_by}</span>
-                  </p>
+              {/* Tab Propriedades */}
+              {activeTab === 'propriedades' && (
+                <div className="tab-content">
+                  <div className="properties-section">
+                    <h3 className="section-title">
+                      <i className="fas fa-microscope me-2"></i>
+                      Propriedades Físicas
+                    </h3>
+                    <div className="properties-grid">
+                      <div className="property-item">
+                        <span className="property-label">Número Atômico</span>
+                        <span className="property-value">{selectedElement.number}</span>
+                      </div>
+                      <div className="property-item">
+                        <span className="property-label">Símbolo Químico</span>
+                        <span className="property-value font-mono">{selectedElement.symbol}</span>
+                      </div>
+                      <div className="property-item">
+                        <span className="property-label">Massa Atômica</span>
+                        <span className="property-value">{selectedElement.atomic_mass} u</span>
+                      </div>
+                      <div className="property-item">
+                        <span className="property-label">Grupo</span>
+                        <span className="property-value">{selectedElement.group}</span>
+                      </div>
+                      <div className="property-item">
+                        <span className="property-label">Período</span>
+                        <span className="property-value">{selectedElement.period}</span>
+                      </div>
+                      <div className="property-item">
+                        <span className="property-label">Categoria</span>
+                        <span className="property-value">{getCategoryName(selectedElement.category)}</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              )}
+
+              {/* Tab História */}
+              {activeTab === 'historia' && (
+                <div className="tab-content">
+                  <div className="history-section">
+                    <h3 className="section-title">
+                      <i className="fas fa-user me-2"></i>
+                      Descoberta
+                    </h3>
+                    <div className="discovery-info">
+                      <p className="discovery-text">
+                        <strong>Descoberto por:</strong> {selectedElement.discovered_by}
+                      </p>
+                    </div>
+
+                    <div className="external-link-section">
+                      <h3 className="section-title">
+                        <i className="fas fa-external-link-alt me-2"></i>
+                        Mais Informações
+                      </h3>
+                      <a
+                        href={selectedElement.source}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="external-link"
+                      >
+                        <i className="fas fa-external-link-alt me-2"></i>
+                        Ver na Wikipédia
+                        <i className="fas fa-external-link-alt ms-2"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Footer do Modal */}
-            <div className="flex justify-end space-x-3 p-6 border-t border-gray-200 dark:border-gray-700">
+            <div className="modal-footer">
+              <button
+                onClick={closeModal}
+                className="modal-btn modal-btn-secondary"
+              >
+                <i className="fas fa-times me-2"></i>
+                Fechar
+              </button>
               <a
                 href={selectedElement.source}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                className="modal-btn modal-btn-primary"
               >
+                <i className="fas fa-external-link-alt me-2"></i>
                 Ver mais informações
               </a>
-              <button
-                onClick={closeModal}
-                className="px-4 py-2 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-lg hover:bg-gray-400 dark:hover:bg-gray-500 transition-colors"
-              >
-                Fechar
-              </button>
             </div>
           </div>
         </div>
