@@ -190,3 +190,49 @@ a {
 .dark .btn-close {
   filter: invert(1);
 }
+
+/* Theme-specific styles */
+.theme-light {
+  background-color: #ffffff;
+  color: #212529;
+}
+
+.theme-dark {
+  background-color: #121212;
+  color: #e5e5e5;
+}
+
+/* Navbar theme styles */
+.theme-light .navbar {
+  background-color: #ffffff !important;
+  border-bottom: 1px solid #e9ecef !important;
+}
+
+.theme-dark .navbar {
+  background-color: #1a1a1a !important;
+  border-bottom: 1px solid #333 !important;
+}
+
+/* Footer theme styles */
+.theme-light footer {
+  background-color: #f8f9fa !important;
+  border-top: 1px solid #dee2e6 !important;
+}
+
+.theme-dark footer {
+  background-color: #1a1a1a !important;
+  border-top: 1px solid #333 !important;
+}
+
+/* Smooth transitions for theme switching */
+body {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.navbar,
+footer,
+.navbar-brand,
+.nav-link,
+.btn {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}

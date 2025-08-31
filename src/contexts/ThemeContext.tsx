@@ -31,7 +31,15 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (mounted) {
-      // Aplicar o tema ao documento
+      const body = document.body;
+
+      // Remover classes anteriores
+      body.classList.remove('theme-light', 'theme-dark');
+
+      // Aplicar nova classe de tema
+      body.classList.add(`theme-${theme}`);
+
+      // Aplicar também no html para compatibilidade
       if (theme === 'dark') {
         document.documentElement.classList.add('dark');
       } else {
@@ -49,7 +57,11 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   // Evitar hidratação incorreta
   if (!mounted) {
-    return <div className="min-h-screen bg-white dark:bg-dark-bg transition-colors duration-200" />;
+    return (
+      <div className="min-vh-100 d-flex flex-column theme-light">
+        <div className="flex-grow-1" style={{ paddingTop: '76px' }}></div>
+      </div>
+    );
   }
 
   return (

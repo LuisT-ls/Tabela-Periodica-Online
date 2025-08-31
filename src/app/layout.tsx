@@ -32,15 +32,13 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className={`${inter.className} bg-white dark:bg-dark-bg text-gray-900 dark:text-dark-text transition-colors duration-200`}>
+      <body className={`${inter.className} d-flex flex-column min-vh-100`}>
         <ThemeProvider>
-          <div className="min-h-screen flex flex-col">
-            <Header />
-            <main className="flex-grow">
-              {children}
-            </main>
-            <Footer />
-          </div>
+          <Header />
+          <main className="flex-grow-1" style={{ paddingTop: '76px' }}>
+            {children}
+          </main>
+          <Footer />
         </ThemeProvider>
         <BootstrapScript />
       </body>
