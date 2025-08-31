@@ -1343,14 +1343,333 @@
 
 /* Melhorias para acessibilidade */
 .element-card:focus {
+  outline: 3px solid #3b82f6;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+}
+
+/* Melhor contraste para modo escuro */
+.dark .element-card {
+  border-width: 2px;
+}
+
+.dark .element-card:focus {
+  outline-color: #60a5fa;
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.4);
+}
+
+/* Melhorar contraste dos textos */
+.element-number {
+  font-weight: 800;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.dark .element-number {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.element-symbol {
+  font-weight: 900;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.dark .element-symbol {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.element-name {
+  font-weight: 700;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.dark .element-name {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Melhorar contraste da legenda */
+.legend-title {
+  font-weight: 800;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.dark .legend-title {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.legend-count {
+  font-weight: 700;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.dark .legend-count {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Melhorar contraste do modal */
+.modal-title {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.dark .modal-title {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Melhorar contraste dos botões */
+.modal-btn {
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.dark .modal-btn {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Melhorar contraste das abas */
+.modal-tab {
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.dark .modal-tab {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Melhorar contraste do tooltip */
+.element-tooltip {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Melhorar contraste do indicador de destaque */
+.highlight-indicator {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Melhorar contraste dos elementos destacados */
+.element-card.highlighted {
+  border-width: 3px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3), 0 0 0 3px rgba(59, 130, 246, 0.5);
+}
+
+.dark .element-card.highlighted {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5), 0 0 0 3px rgba(96, 165, 250, 0.6);
+}
+
+/* Melhorar contraste dos elementos não destacados */
+.periodic-grid-main:has(.highlighted) .element-card:not(.highlighted),
+.lanthanides-grid:has(.highlighted) .element-card:not(.highlighted),
+.actinides-grid:has(.highlighted) .element-card:not(.highlighted) {
+  opacity: 0.3;
+  transform: scale(0.9);
+  filter: grayscale(0.5);
+}
+
+/* Melhorar contraste da legenda */
+.legend-item:focus {
+  outline: 3px solid #3b82f6;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+}
+
+.dark .legend-item:focus {
+  outline-color: #60a5fa;
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.4);
+}
+
+/* Melhorar contraste dos botões da legenda */
+.highlight-clear-btn:focus {
+  outline: 2px solid rgba(255, 255, 255, 0.8);
+  outline-offset: 2px;
+}
+
+/* Melhorar contraste dos botões do modal */
+.modal-close-btn:focus {
   outline: 2px solid #3b82f6;
   outline-offset: 2px;
+}
+
+.dark .modal-close-btn:focus {
+  outline-color: #60a5fa;
+}
+
+/* Melhorar contraste das abas do modal */
+.modal-tab:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.dark .modal-tab:focus {
+  outline-color: #60a5fa;
+}
+
+/* Melhorar contraste dos links */
+.external-link:focus {
+  outline: 2px solid rgba(255, 255, 255, 0.8);
+  outline-offset: 2px;
+}
+
+/* Melhorar contraste dos botões */
+.modal-btn:focus {
+  outline: 2px solid rgba(255, 255, 255, 0.8);
+  outline-offset: 2px;
+}
+
+.dark .modal-btn-secondary:focus {
+  outline-color: #60a5fa;
+}
+
+/* Melhorar contraste dos elementos vazios */
+.empty-cell {
+  border-width: 2px;
+  border-style: dashed;
+  opacity: 0.6;
+}
+
+.dark .empty-cell {
+  border-width: 2px;
+  opacity: 0.4;
+}
+
+/* Melhorar contraste dos indicadores de cor */
+.legend-color-indicator {
+  border-width: 3px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.dark .legend-color-indicator {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* Melhorar contraste dos efeitos de hover */
+.element-card:hover {
+  border-width: 3px;
+}
+
+.legend-item:hover {
+  border-width: 3px;
+}
+
+/* Melhorar contraste dos textos de descrição */
+.legend-description {
+  font-weight: 500;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.dark .legend-description {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.legend-stat {
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.dark .legend-stat {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Melhorar contraste dos textos do modal */
+.summary-text {
+  font-weight: 500;
+  line-height: 1.7;
+}
+
+.discovery-text {
+  font-weight: 500;
+  line-height: 1.7;
+}
+
+/* Melhorar contraste dos labels */
+.info-label, .property-label {
+  font-weight: 600;
+}
+
+.info-value, .property-value {
+  font-weight: 700;
+}
+
+/* Melhorar contraste dos títulos das seções */
+.section-title {
+  font-weight: 800;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.dark .section-title {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Melhorar contraste dos ícones */
+.section-title i {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.dark .section-title i {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Melhorar contraste dos elementos de informação */
+.info-item, .property-item {
+  border-width: 2px;
+}
+
+.dark .info-item, .dark .property-item {
+  border-width: 2px;
+}
+
+/* Melhorar contraste dos elementos especiais */
+.element-card[data-category="lantanídeo"],
+.element-card[data-category="actinídeo"] {
+  border-width: 4px;
+}
+
+/* Melhorar contraste dos elementos destacados */
+.element-card.highlighted {
+  border-width: 4px;
+}
+
+/* Melhorar contraste dos elementos em hover */
+.element-card:hover {
+  border-width: 4px;
+}
+
+/* Melhorar contraste dos elementos da legenda em hover */
+.legend-item:hover {
+  border-width: 4px;
+}
+
+/* Melhorar contraste dos elementos da legenda destacados */
+.legend-item.hovered {
+  border-width: 4px;
 }
 
 /* Indicadores visuais para elementos especiais */
 .element-card[data-category="lantanídeo"],
 .element-card[data-category="actinídeo"] {
   border-width: 3px;
+}
+
+/* Skip Link para acessibilidade */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: #3b82f6;
+  color: white;
+  padding: 8px 16px;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  z-index: 1000;
+  transition: top 0.3s ease;
+}
+
+.skip-link:focus {
+  top: 6px;
+  outline: 2px solid rgba(255, 255, 255, 0.8);
+  outline-offset: 2px;
+}
+
+.dark .skip-link {
+  background: #60a5fa;
 }
 
 /* Estilos para elementos vazios na tabela */
